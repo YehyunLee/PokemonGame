@@ -4,18 +4,37 @@ import entity.Pokemon;
 import use_case.PokemonUseCase;
 
 import org.json.JSONArray;
+import use_case.PokemonUseCaseInterface;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class PokemonApiCallDataAccessObject {
+/**
+ * The PokemonApiCallDataAccessObject class is responsible for fetching Pokemon data from an external API.
+ * It uses the PokemonUseCase to create Pokemon objects from the fetched data.
+ *
+ * @author Tyseer Toufiq
+ */
+public class PokemonApiCallDataAccessObject implements PokemonDataGateway {
     private final PokemonUseCase pokemonUseCase;
 
-    public PokemonApiCallDataAccessObject(PokemonUseCase pokemonUseCase) {
-        this.pokemonUseCase = pokemonUseCase;
+    /**
+     * Constructor to initialize the PokemonApiCallDataAccessObject with a PokemonUseCase instance.
+     *
+     * @param pokemonUseCase The PokemonUseCase instance for data extraction and transformation.
+     */
+    public PokemonApiCallDataAccessObject(PokemonUseCaseInterface pokemonUseCase) {
+        this.pokemonUseCase = new PokemonUseCase();
     }
 
+    /**
+     * Fetches Pokemon data from an external API by name and returns a Pokemon object.
+     *
+     * @param pokemonName The name of the Pokemon to fetch.
+     * @return A Pokemon object containing the fetched data.
+     */
     public Pokemon fetchPokemonData(String pokemonName) {
         // Make the API request and retrieve the Pokémon data as a JSONArray
         JSONArray responseData = null;
@@ -25,16 +44,20 @@ public class PokemonApiCallDataAccessObject {
             throw new RuntimeException(e);
         }
 
-        // Use the data extractor to extract Pokemon data
-        Map<String, Object> extractedData = PokemonUseCase.PokemonDataExtractor.extractFields(responseData);
+        // Use the PokemonUseCase instance to extract Pokemon data
+        Map<String, Object> extractedData = pokemonUseCase.extractFields(responseData);
 
         // Create a Pokemon object using the extracted data
-        Pokemon fetchedPokemon = pokemonUseCase.createPokemon(extractedData);
-
-        return fetchedPokemon;
+        return pokemonUseCase.createPokemon(extractedData);
     }
 
-
+    /**
+     * Makes an HTTP GET request to an external API to fetch Pokemon data.
+     *
+     * @param pokemonName The name of the Pokemon to fetch.
+     * @return A JSONArray containing the response data from the API.
+     * @throws IOException If an IO error occurs during the HTTP request.
+     */
     public static JSONArray makeHttpRequest(String pokemonName) throws IOException {
         // Construct the URL with the provided Pokémon name
         String apiUrl = "https://ex.traction.one/pokedex/pokemon/" + pokemonName;
