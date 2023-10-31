@@ -1,4 +1,4 @@
-package entity;
+package src.entity;
 
 public class GameState {
 }
