@@ -59,7 +59,7 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
                 // Parse and set HP, attack, and defense from baseStats
                 JSONObject baseStats = pokemonData.optJSONObject("baseStats");
                 if (baseStats != null) {
-                    pokemon.setHp(baseStats.optInt("hp"));
+                    pokemon.setHealth(baseStats.optInt("hp"));
                     pokemon.setAttack(baseStats.optInt("attack"));
                     pokemon.setDefense(baseStats.optInt("defense"));
                 }

@@ -1,96 +1,77 @@
 package entity;
 
-/**
- * The `Pokemon` class represents a Pokemon entity with attributes such as name,
- * HP, attack, and defense, and front and back sprite images.
- */
 public class Pokemon {
-    private String name;
-    private int hp;
-    private int attack;
-    private int defense;
-    private String frontImg;
+    String name = "";
+    Integer health = 0;
+    Integer attack = 0;
+    Integer defense = 0;
+    entity.Move[] moves = new entity.Move[0];
+    String frontSprite = "";
+    String backSprite = "";
 
-    private String backImg;
+//    public Pokemon(String name, Double health, Double attack, Double defense, entity.Move[] moves, String frontSprite, String backSprite) {
+//        this.name = name;
+//        this.health = health;
+//        this.attack = attack;
+//        this.defense = defense;
+//        this.moves = moves;
+//        this.frontSprite = frontSprite;
+//        this.backSprite = backSprite;
+//    } I dont think we need this, since when we make Pokemons we should use the individual get methods, to aviod error
 
-    /**
-     * Gets the name of the Pokemon.
-     *
-     * @return The name of the Pokemon.
-     */
+    // All methods to get Instance Attributes
     public String getName() {
         return name;
     }
+    public Integer getHealth() {
+        return health;
+    }
+    public Integer getAttack() {
+        return attack;
+    }
+    public Integer getDefense() {
+        return defense;
+    }
+    public entity.Move[] getMoves() {
+        return moves;
+    }
+    public String getFrontSprite() {
+        return frontSprite;
+    }
+    public String getBackSprite() {
+        return backSprite;
+    }
 
-    /**
-     * Sets the name of the Pokemon.
-     *
-     * @param name The name of the Pokemon.
-     */
+
+    // All methods to set Instance Attributes
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * Gets the HP (Hit Points) of the Pokemon.
-     *
-     * @return The HP of the Pokemon.
-     */
-    public int getHp() {
-        return hp;
+    public void setHealth(Integer health) {
+        this.health = health;
     }
-
-    /**
-     * Sets the HP (Hit Points) of the Pokemon.
-     *
-     * @param hp The HP of the Pokemon.
-     */
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    /**
-     * Gets the attack power of the Pokemon.
-     *
-     * @return The attack power of the Pokemon.
-     */
-    public int getAttack() {
-        return attack;
-    }
-
-    /**
-     * Sets the attack power of the Pokemon.
-     *
-     * @param attack The attack power of the Pokemon.
-     */
-    public void setAttack(int attack) {
+    public void setAttack(Integer attack) {
         this.attack = attack;
     }
-
-    /**
-     * Gets the defense power of the Pokemon.
-     *
-     * @return The defense power of the Pokemon.
-     */
-    public int getDefense() {
-        return defense;
-    }
-
-    /**
-     * Sets the defense power of the Pokemon.
-     *
-     * @param defense The defense power of the Pokemon.
-     */
-    public void setDefense(int defense) {
+    public void setDefense(Integer defense) {
         this.defense = defense;
     }
+    public void setMoves(entity.Move[] moves) {
+        this.moves = moves;
+    }
+    public void setFrontSprite(String frontSprite) {
+        this.frontSprite = frontSprite;
+    }
+    public void setBackSprite(String backSprite) {
+        this.backSprite = backSprite;
+    }
 
 
+    // Print the data for the Pokemon Object
     public void printAllStats() {
-        // Print the data for the Pokemon Object
         System.out.println("Pokemon Data:");
         System.out.println("Name: " + this.getName());
-        System.out.println("HP: " + this.getHp());
+        System.out.println("HP: " + this.getHealth());
         System.out.println("Attack: " + this.getAttack());
         System.out.println("Defense: " + this.getDefense());
     }
