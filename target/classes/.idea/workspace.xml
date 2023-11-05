@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5a86ad52-a9bb-4743-aacd-00399b4317e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/CalculatorMove.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Pokemon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Pokemon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/PokemonFactoryFromData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/PokemonFactoryFromData.java" afterDir="false" />
-    </list>
+    <list default="true" id="5a86ad52-a9bb-4743-aacd-00399b4317e8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +40,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "Merging Tyseer-ApiDataCall",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/tysee/OneDrive/Desktop/Csc207 Final Preoject/PokemonGame",
     "node.js.detected.package.eslint": "true",
@@ -156,7 +152,9 @@
       <workItem from="1698806567400" duration="259000" />
       <workItem from="1698806837683" duration="491000" />
       <workItem from="1699120506581" duration="4000" />
-      <workItem from="1699161553566" duration="8273000" />
+      <workItem from="1699161553566" duration="9243000" />
+      <workItem from="1699171381532" duration="5000" />
+      <workItem from="1699171395296" duration="316000" />
     </task>
     <servers />
   </component>
