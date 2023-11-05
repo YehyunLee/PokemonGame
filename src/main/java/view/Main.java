@@ -1,18 +1,19 @@
 package view;
 
 import data_access.PokemonApiCallDataAccessObject;
+import data_access.PokemonDataAccess;
+import use_case.PokemonFactoryFromData;
 import entity.Pokemon;
-import use_case.PokemonUseCase;
-import use_case.PokemonUseCaseInterface;
 
 public class Main {
     public static void main(String[] args) {
+        // Create an instance of PokemonDataAccess (e.g., PokemonApiCallDataAccessObject)
+        PokemonDataAccess dataAccess = new PokemonApiCallDataAccessObject();
 
-        // Create an instance of PokemonUseCase
-        PokemonUseCase pokemonUseCase = new PokemonUseCase();
+        // Create an instance of PokemonFactoryFromData and inject the data access object
+        PokemonFactoryFromData factory = new PokemonFactoryFromData(dataAccess);
 
-        // Call createPokemonByName to fetch and create a Pokemon
-        Pokemon pokemon = pokemonUseCase.createPokemonByName("venusaur");
-        pokemon.printAllStats();
+        Pokemon poke = factory.createPokemonFromData("Ho-Oh");
+        poke.printAllStats();
     }
 }

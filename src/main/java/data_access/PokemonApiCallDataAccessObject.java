@@ -1,54 +1,37 @@
 package data_access;
 
-import entity.Pokemon;
-import use_case.PokemonUseCase;
-
 import org.json.JSONArray;
-import use_case.PokemonUseCaseInterface;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
 
 /**
- * The PokemonApiCallDataAccessObject class is responsible for fetching Pokemon data from an external API.
- * It uses the PokemonUseCase to create Pokemon objects from the fetched data.
- *
- * @author Tyseer Toufiq
+ * The {@code PokemonApiCallDataAccessObject} class provides methods for making HTTP requests to an external API
+ * to fetch Pokemon data in the form of a JSONArray.
  */
-public class PokemonApiCallDataAccessObject implements PokemonDataGateway {
-    private final PokemonUseCase pokemonUseCase;
+public class PokemonApiCallDataAccessObject implements PokemonDataAccess {
 
     /**
-     * Constructor to initialize the PokemonApiCallDataAccessObject with a PokemonUseCase instance.
-     *
-     * @param pokemonUseCase The PokemonUseCase instance for data extraction and transformation.
-     */
-    public PokemonApiCallDataAccessObject(PokemonUseCaseInterface pokemonUseCase) {
-        this.pokemonUseCase = new PokemonUseCase();
-    }
-
-    /**
-     * Fetches Pokemon data from an external API by name and returns a Pokemon object.
+     * Fetches Pokemon data from an external API based on the provided Pokemon name.
      *
      * @param pokemonName The name of the Pokemon to fetch.
-     * @return A Pokemon object containing the fetched data.
+     * @return A JSONArray containing the response data from the API.
      */
-    public Pokemon fetchPokemonData(String pokemonName) {
-        // Make the API request and retrieve the Pokémon data as a JSONArray
+    @Override
+    public JSONArray fetchPokemonData(String pokemonName) {
+        // Initialize a variable to store the API response data
         JSONArray responseData = null;
         try {
+            // Make an HTTP request to fetch Pokémon data and store the response
             responseData = makeHttpRequest(pokemonName);
         } catch (IOException e) {
+            // If an exception occurs during the request, throw a runtime exception
             throw new RuntimeException(e);
         }
 
-        // Use the PokemonUseCase instance to extract Pokemon data
-        Map<String, Object> extractedData = pokemonUseCase.extractFields(responseData);
-
-        // Create a Pokemon object using the extracted data
-        return pokemonUseCase.createPokemon(extractedData);
+        // Return the fetched Pokémon data as a JSONArray
+        return responseData;
     }
 
     /**
@@ -62,7 +45,7 @@ public class PokemonApiCallDataAccessObject implements PokemonDataGateway {
         // Construct the URL with the provided Pokémon name
         String apiUrl = "https://ex.traction.one/pokedex/pokemon/" + pokemonName;
 
-        // Create a URL object
+        // Create a URL object representing the API endpoint
         URL url = new URL(apiUrl);
 
         // Open a connection to the URL
