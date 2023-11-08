@@ -1,2 +1,6 @@
-package entity;public class Defense {
+package entity;
+
+public class Defense {
+
+
 }

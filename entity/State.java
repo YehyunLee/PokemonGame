@@ -1,2 +1,8 @@
-package entity;public interface State {
+package entity;
+
+public interface State {
+
+    public boolean getGameState();
+
+
 }

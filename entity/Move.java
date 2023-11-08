@@ -1,4 +1,4 @@
 package entity;
 
-public class Move {
+public interface Move {
 }
