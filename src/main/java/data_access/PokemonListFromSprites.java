@@ -38,6 +38,25 @@ public class PokemonListFromSprites {
         return pokemonSprites.toArray(new String[0]);
     }
 
+
+
+    private boolean containsMatchingSprite(String[] sprites, String targetSprite) {
+        /**
+         * Compare last index name and return true if match
+         **/
+        String targetSpriteName = targetSprite.substring(targetSprite.lastIndexOf(File.separator) + 1);
+
+        for (String sprite : sprites) {
+            String spriteName = sprite.substring(sprite.lastIndexOf(File.separator) + 1);
+//            System.out.println(spriteName);
+//            output: 493-fire.gif
+            if (spriteName.equals(targetSpriteName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String[] getCombinedListOfPokemonSprites() {
         /**
          * Get user dir, access front/back sprites folder, and fetch all pokemon names
@@ -56,23 +75,6 @@ public class PokemonListFromSprites {
         }
 
         return combinedSprites.toArray(new String[0]);
-    }
-
-    private boolean containsMatchingSprite(String[] sprites, String targetSprite) {
-        /**
-         * Compare last index name and return true if match
-         **/
-        String targetSpriteName = targetSprite.substring(targetSprite.lastIndexOf(File.separator) + 1);
-
-        for (String sprite : sprites) {
-            String spriteName = sprite.substring(sprite.lastIndexOf(File.separator) + 1);
-//            System.out.println(spriteName);
-//            output: 493-fire.gif
-            if (spriteName.equals(targetSpriteName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 
