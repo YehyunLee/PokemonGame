@@ -7,3 +7,5 @@
 /dataSources/
 /dataSources.local.xml
 /.idea/
+/target/
+/.idea/misc.xml
