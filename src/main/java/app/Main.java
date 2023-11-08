@@ -1,4 +1,4 @@
-package view;
+package app;
 
 import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonDataAccess;
