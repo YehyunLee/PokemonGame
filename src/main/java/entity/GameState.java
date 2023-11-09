@@ -1,7 +1,7 @@
 package entity;
 
 public class GameState {
-    private boolean turn;
+    public boolean turn;
     GameState() {
         this.turn = true;
     }
