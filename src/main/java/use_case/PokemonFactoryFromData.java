@@ -3,9 +3,8 @@ package use_case;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
 import entity.Pokemon;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * The {@code PokemonFactoryFromData} class is responsible for creating Pokemon objects
@@ -18,7 +17,7 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
     /**
      * Constructs a {@code PokemonFactoryFromData} instance with the specified data access objects.
      *
-     * @param dataAccess       The data access object to fetch Pokemon data.
+     * @param dataAccess        The data access object to fetch Pokemon data.
      * @param spritesDataAccess The data access object to fetch Pokemon sprites.
      */
     public PokemonFactoryFromData(PokemonApiCallInterface dataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
@@ -29,61 +28,86 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
     /**
      * Creates a Pokemon object from JSON data.
      *
-     * @param data The JSON data representing a Pokemon.
+     * @param name The JSON data representing a Pokemon.
      * @return A Pokemon object created from the JSON data, or null if parsing fails.
      */
     @Override
-    public Pokemon createPokemonFromData(String data) {
-        // Fetch data using the data access object
-        JSONArray jsonData = apiDataAccess.fetchPokemonData(data);
+    public Pokemon createPokemonFromData(String name) {
 
-        // Parse and create a Pokemon object from the JSON data
-        Pokemon pokemon = parsePokemonData(String.valueOf(jsonData));
+        // Make a new Pokemon Object
+        Pokemon pokemon = new Pokemon();
 
-        // Add the sprites to the Pokemon object. We pass through combinedSprites instead of calling it again.
-        String[] sprites = spritesDataAccess.getCombinedListOfPokemonSprites(pokemon.getNumber());
-        pokemon.setFrontSprite(sprites[0]);
-        pokemon.setBackSprite(sprites[1]);
+        // Set all the Pokemon Attributes
+        setPokemonAttributes(pokemon, name);
+
+        // Set all Pokemon back and front sprites
+        setPokemonSprites(pokemon, name);
 
         return pokemon;
     }
 
     /**
-     * Parses JSON data to create a Pokemon object with the required attributes.
+     * Sets Pokemon attributes by fetching data from an API.
      *
-     * @param jsonData The JSON data representing a Pokemon.
-     * @return A Pokemon object created from the JSON data, or null if parsing fails.
+     * @param pokemon The Pokemon object to set attributes for.
+     * @param name    The name of the Pokemon.
      */
-    private Pokemon parsePokemonData(String jsonData) {
-        try {
-            JSONArray jsonArray = new JSONArray(jsonData);
+    public void setPokemonAttributes(Pokemon pokemon, String name) {
 
-            if (!jsonArray.isEmpty()) {
-                JSONObject pokemonData = jsonArray.getJSONObject(0); // Assuming the data is in the first object
+        PokemonApiCallParser parser = new PokemonApiCallParser(apiDataAccess);
+        Map<String, Object> apiDataList = parser.fetchPokemonData(name);
 
-                Pokemon pokemon = new Pokemon();
+        for (Map.Entry<String, Object> entry : apiDataList.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
 
-                // Parse and set Pokemon name
-                pokemon.setName(pokemonData.optString("name"));
-
-                // Parse and set Pokemon number
-                pokemon.setNumber(pokemonData.optInt("number"));
-
-                // Parse and set HP, attack, and defense from baseStats
-                JSONObject baseStats = pokemonData.optJSONObject("baseStats");
-                if (baseStats != null) {
-                    pokemon.setHealth(baseStats.optInt("hp"));
-                    pokemon.setAttack(baseStats.optInt("attack"));
-                    pokemon.setDefense(baseStats.optInt("defense"));
-                }
-
-                return pokemon;
+            switch (key) {
+                case "number":
+                    pokemon.setNumber((Integer) value);
+                    break;
+                case "name":
+                    pokemon.setName((String) value);
+                    break;
+                case "hp":
+                    pokemon.setHealth((Integer) value);
+                    break;
+                case "attack":
+                    pokemon.setAttack((Integer) value);
+                    break;
+                case "defense":
+                    pokemon.setDefense((Integer) value);
+                    break;
+                default:
+                    break;
             }
-        } catch (JSONException e) {
-            // Handle JSON parsing error
-            e.printStackTrace();
         }
+    }
 
-        return null; // Return null in case of parsing failure
+    /**
+     * Sets Pokemon sprites by fetching data from a sprite source.
+     *
+     * @param pokemon The Pokemon object to set sprites for.
+     * @param name    The name of the Pokemon.
+     */
+    public void setPokemonSprites(Pokemon pokemon, String name) {
+
+        PokemonListFromSpritesDataParser spriteParser = new PokemonListFromSpritesDataParser(spritesDataAccess);
+        Map<String, String> spriteDataList = spriteParser.fetchPokemonSpritesData(pokemon.getNumber());
+
+        for (Map.Entry<String, String> entry : spriteDataList.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+
+            switch (key) {
+                case "frontSprite":
+                    pokemon.setFrontSprite((String) value);
+                    break;
+                case "backSprite":
+                    pokemon.setBackSprite((String) value);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

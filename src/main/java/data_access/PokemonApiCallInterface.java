@@ -14,5 +14,5 @@ public interface PokemonApiCallInterface {
      * @param pokemonName The name of the Pokemon to fetch.
      * @return A JSONArray containing the response data from the external source.
      */
-    JSONArray fetchPokemonData(String pokemonName);
+    JSONArray fetchRawPokemonData(String pokemonName);
 }

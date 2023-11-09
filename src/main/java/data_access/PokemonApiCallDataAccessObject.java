@@ -10,16 +10,9 @@ import java.net.URL;
  * The {@code PokemonApiCallDataAccessObject} class provides methods for making HTTP requests to an external API
  * to fetch Pokemon data in the form of a JSONArray.
  */
-public class PokemonApiCallApiCallInterfaceObject implements PokemonApiCallInterface {
+public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
 
-    /**
-     * Fetches Pokemon data from an external API based on the provided Pokemon name.
-     *
-     * @param pokemonName The name of the Pokemon to fetch.
-     * @return A JSONArray containing the response data from the API.
-     */
-    @Override
-    public JSONArray fetchPokemonData(String pokemonName) {
+    public JSONArray fetchRawPokemonData(String pokemonName) {
         // Initialize a variable to store the API response data
         JSONArray responseData = null;
         try {
@@ -30,7 +23,16 @@ public class PokemonApiCallApiCallInterfaceObject implements PokemonApiCallInter
             throw new RuntimeException(e);
         }
 
-        // Return the fetched Pokémon data as a JSONArray
+        // Check if the response data is empty, indicating that the Pokemon was not found
+        if (responseData == null || responseData.isEmpty()) {
+            // Print a message indicating that the requested Pokemon does not exist
+            System.out.println("Pokemon with name '" + pokemonName + "' not found.");
+
+            // Exit the program with a non-zero exit code (e.g., 1) to indicate an error
+            System.exit(1);
+        }
+
+        // Return the fetched Pokémon data as a JSONArray (may be null if not found)
         return responseData;
     }
 
@@ -80,6 +82,15 @@ public class PokemonApiCallApiCallInterfaceObject implements PokemonApiCallInter
 
             // Parse the response data as a JSONArray
             responseData = new JSONArray(response.toString());
+        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+            // Close the connection
+            connection.disconnect();
+
+            // Print a message indicating that the requested Pokemon does not exist
+            System.out.println("Pokemon with name '" + pokemonName + "' not found.");
+
+            // Exit the program with a non-zero exit code (e.g., 1) to indicate an error
+            System.exit(1);
         } else {
             // Close the connection
             connection.disconnect();
@@ -88,7 +99,7 @@ public class PokemonApiCallApiCallInterfaceObject implements PokemonApiCallInter
             throw new IOException("HTTP request failed with response code: " + responseCode);
         }
 
-        // Return the response data as a JSONArray
+        // Return the response data as a JSONArray (may be empty if not found)
         return responseData;
     }
 }
