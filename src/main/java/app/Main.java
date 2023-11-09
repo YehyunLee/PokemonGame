@@ -1,6 +1,6 @@
 package app;
 
-import data_access.PokemonApiCallApiCallInterfaceObject;
+import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
@@ -10,12 +10,12 @@ public class Main {
     public static void main(String[] args) {
 
 
-        PokemonApiCallInterface apiDataAccess = new PokemonApiCallApiCallInterfaceObject();
+        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
         PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 
         // Create an instance of PokemonFactoryFromData and inject the data access object
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
-        Pokemon poke = factory.createPokemonFromData("Charizard");
+        Pokemon poke = factory.createPokemonFromData("Eternatus");
         poke.printAllStats();
 
     }
