@@ -12,5 +12,6 @@ public interface PokemonFactoryFromDataInterface {
      * @param data The JSON data representing a Pokemon.
      * @return A Pokemon object created from the JSON data, or null if parsing fails.
      */
+
     Pokemon createPokemonFromData(String data);
 }
