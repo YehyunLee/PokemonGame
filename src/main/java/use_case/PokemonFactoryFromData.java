@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
     private final PokemonApiCallInterface apiDataAccess;
-    private final PokemonListFromSpritesInterface spritesDataAccess;
+    public final PokemonListFromSpritesDataParser spriteParser; // Need to reuse this 10000 times. Want to run only once
 
     /**
      * Constructs a {@code PokemonFactoryFromData} instance with the specified data access objects.
@@ -22,7 +22,8 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
      */
     public PokemonFactoryFromData(PokemonApiCallInterface dataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
         this.apiDataAccess = dataAccess;
-        this.spritesDataAccess = spritesDataAccess;
+        this.spriteParser = new PokemonListFromSpritesDataParser(spritesDataAccess);
+        spriteParser.SaveAllSprites(); // Fetch and save all sprites' data. Ran only once to maxmise efficiency.
     }
 
     /**
@@ -90,8 +91,6 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
      * @param name    The name of the Pokemon.
      */
     public void setPokemonSprites(Pokemon pokemon, String name) {
-
-        PokemonListFromSpritesDataParser spriteParser = new PokemonListFromSpritesDataParser(spritesDataAccess);
         Map<String, String> spriteDataList = spriteParser.fetchPokemonSpritesData(pokemon.getNumber());
 
         for (Map.Entry<String, String> entry : spriteDataList.entrySet()) {
