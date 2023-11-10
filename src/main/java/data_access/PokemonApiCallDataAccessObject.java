@@ -19,17 +19,14 @@ public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
             // Make an HTTP request to fetch Pokémon data and store the response
             responseData = makeHttpRequest(pokemonName);
         } catch (IOException e) {
-            // If an exception occurs during the request, throw a runtime exception
-            throw new RuntimeException(e);
+            // return empty array if error occurs
+            return new JSONArray();
         }
 
         // Check if the response data is empty, indicating that the Pokemon was not found
         if (responseData == null || responseData.isEmpty()) {
             // Print a message indicating that the requested Pokemon does not exist
-            System.out.println("Pokemon with name '" + pokemonName + "' not found.");
-
-            // Exit the program with a non-zero exit code (e.g., 1) to indicate an error
-            System.exit(1);
+            System.out.println("[API DATA EMPTY] Pokemon with name '" + pokemonName + "' not found.");
         }
 
         // Return the fetched Pokémon data as a JSONArray (may be null if not found)
@@ -87,10 +84,7 @@ public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
             connection.disconnect();
 
             // Print a message indicating that the requested Pokemon does not exist
-            System.out.println("Pokemon with name '" + pokemonName + "' not found.");
-
-            // Exit the program with a non-zero exit code (e.g., 1) to indicate an error
-            System.exit(1);
+            System.out.println("[API ISSUE] Pokemon with name '" + pokemonName + "' not found.");
         } else {
             // Close the connection
             connection.disconnect();

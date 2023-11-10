@@ -1,10 +1,11 @@
 package use_case;
 
+import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
 
+import javax.sound.midi.SysexMessage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,8 @@ import java.util.regex.Pattern;
  * The {@code PokemonListFromSpritesDataParser} class contains methods for processing Pokemon sprite data.
  */
 public class PokemonListFromSpritesDataParser {
+    private String[] frontSprites;
+    private String[] backSprites;
 
     private final PokemonListFromSpritesInterface spritesDataAccess;
 
@@ -24,6 +27,80 @@ public class PokemonListFromSpritesDataParser {
         this.spritesDataAccess = spritesDataAccess;
     }
 
+
+    /**
+     * Get front and back all sprite lists and save locally and return it as well.
+     * This is only ran once to make program efficient.
+     */
+    public void SaveAllSprites() {
+        // Get front and back all sprite lists and save locally
+        this.frontSprites = spritesDataAccess.getRawListOfPokemonSprites("");
+        this.backSprites = spritesDataAccess.getRawListOfPokemonSprites("back");
+        System.out.println("All sprites saved locally.");
+    }
+
+    /**
+     * Extract Pokemon number from sprite path
+     * @param spritePath String in format of C:\Users\USER\...\showdown\1.gif
+     * @return return String of number(ID) of Pokemon
+     */
+    private String extractPokemonNumber(String spritePath) {
+        String[] parts = spritePath.split("\\\\");
+        String lastPart = parts[parts.length - 1];
+        String pokemonNumber = lastPart.split("\\.")[0];
+        return pokemonNumber;
+    }
+
+    /**
+     * Get user dir, access front/back sprites folder, and fetch all Pokemon numbers
+     * Then call containsMatchingSprite to get intersection of front/back sprites
+     * (This is to avoid missing sprites)
+     * @return return number(ID) of all Pokemons
+     **/
+    public String[] getCombinedListOfPokemonNumbers() {
+        List<String> combinedSprites = new ArrayList<>();
+        for (String frontSprite : frontSprites) {
+            if (containsMatchingSprite(backSprites, frontSprite)) {
+                combinedSprites.add(
+                        extractPokemonNumber(frontSprite));
+            }
+        }
+        combinedSprites.toArray(new String[0]);
+
+        return combinedSprites.toArray(new String[0]);
+    }
+
+    /**
+     * Get user dir, access front/back sprites folder, and fetch all Pokemon numbers without duplicates
+     * Then convert all numbers to Pokemon names using APIs
+     * @return return names of all unique Pokemons
+     */
+    public String[] getAllPokemonNamesNoDuplicate(PokemonApiCallInterface apiDataAccess) {
+        String[] allPokemonNumbers = getCombinedListOfPokemonNumbers();
+        // [DEVELOPMENT] Limit number of Pokemons
+        allPokemonNumbers = Arrays.copyOfRange(allPokemonNumbers, 0, 10);
+        List<String> allPokemonNames = new ArrayList<>();
+        for (String pokemonNumber : allPokemonNumbers) {
+            // get Pokemon name from API
+            PokemonApiCallParser parser = new PokemonApiCallParser(apiDataAccess);
+            Map<String, Object> apiDataList = parser.fetchPokemonData(pokemonNumber);
+
+            for (Map.Entry<String, Object> entry : apiDataList.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                switch (key) {
+                    case "name":
+                        String pokemonName = (String) value;
+                        allPokemonNames.add(pokemonName);
+                        break;
+                }
+            }
+        }
+        // remove duplicate
+        allPokemonNames = new ArrayList<>(new HashSet<>(allPokemonNames));
+        return allPokemonNames.toArray(new String[0]);
+    }
+
     /**
      * Fetches Pokemon sprite data for a given Pokemon number.
      *
@@ -31,10 +108,6 @@ public class PokemonListFromSpritesDataParser {
      * @return A map containing sprite types ("frontSprite" and "backSprite") and their file paths.
      */
     public Map<String, String> fetchPokemonSpritesData(Integer pokemonNum) {
-        // Get front and back sprite lists
-        String[] frontSprites = spritesDataAccess.getRawListOfPokemonSprites("");
-        String[] backSprites = spritesDataAccess.getRawListOfPokemonSprites("back");
-
         // Get the current working directory
         String currentDirectory = System.getProperty("user.dir");
 
