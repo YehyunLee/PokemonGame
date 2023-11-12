@@ -4,6 +4,7 @@ import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
+import entity.PlayerPokemons;
 import use_case.PokemonFactoryFromData;
 import entity.Pokemon;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class Main {
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
+        // [To be Deleted] ////////////////////////////////////////////////////////////////////////
         // For each Pokemon name, create a Pokemon object, save Pokemon and print its stats
         Pokemon[] allPokemon = new Pokemon[allPokemonNames.length];
         for (int i = 0; i < allPokemonNames.length; i++) {
@@ -50,5 +52,9 @@ public class Main {
         for (int i = 0; i < 6; i++) {
             System.out.println(chosenPokemon[i].getName());
         }
+        //////////////////////////////////////////////////////////////////////////
+
+        PlayerPokemons player = new PlayerPokemons(chosenPokemon, "Player", 0);
+        PlayerPokemons aiPlayer = new PlayerPokemons(chosenPokemon, "AI Player", 0);
     }
 }

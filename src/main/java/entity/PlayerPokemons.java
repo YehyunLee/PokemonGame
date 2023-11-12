@@ -1,15 +1,20 @@
 package entity;
 
 public class PlayerPokemons {
-
-    Pokemon[] pokemons = new Pokemon[0];
-    int FirstPokemon = 0;
-
-    int chosenPokemon = 0;
+    private String name = "";
+    private Pokemon[] pokemons = new Pokemon[0];
+    private int firstPokemon = 0;
+    private int currentPokemonIndex = 0;
 
     // Create a method for changing chosenPokemon value
-    public int setChosenPokemon(int newChosenPokemon) {
-        this.chosenPokemon = newChosenPokemon;
-        return newChosenPokemon;
+    public void switchPokemon(int newChosenPokemonIndex) {
+        this.currentPokemonIndex = newChosenPokemonIndex;
+    }
+
+    public PlayerPokemons(Pokemon[] pokemons, String name, int firstPokemon) {
+        this.name = name;
+        this.pokemons = pokemons;
+        this.firstPokemon = firstPokemon;
+        this.currentPokemonIndex = firstPokemon;
     }
 }
