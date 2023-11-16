@@ -1,6 +1,6 @@
 package entity;
 
-public class Heal extends Move{
+public class Heal extends Moves {
     String name;
     float healAmount;
 

@@ -1,8 +1,8 @@
 package entity;
 
-public class Move {
+public class Moves {
     String name;
-    public Move(String name){
+    public Moves(String name){
         this.name = name;
     }
     public String getName() {

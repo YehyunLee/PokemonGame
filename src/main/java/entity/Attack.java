@@ -1,6 +1,6 @@
 package entity;
 
-public class Attack extends Move{
+public class Attack extends Moves {
 
     String name;
     float lightAttack;

@@ -1,6 +1,6 @@
 package entity;
 
-public class Defense extends Move{
+public class Defense extends Moves {
     String name;
     float defense;
 
