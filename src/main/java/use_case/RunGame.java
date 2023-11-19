@@ -7,6 +7,4 @@ public class RunGame {
         System.out.println(player.getName());
         System.out.println(aiPlayer.getName());
     }
-
-
 }
