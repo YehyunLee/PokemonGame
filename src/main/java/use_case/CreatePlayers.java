@@ -50,6 +50,6 @@ public class CreatePlayers {
         this.aiPlayer = aiPlayer;
     }
     public PlayerPokemons[] returnPlayers() {
-        return new PlayerPokemons[]{player, aiPlayer};
+        return new PlayerPokemons[] {player, aiPlayer};
     }
 }
