@@ -46,7 +46,14 @@ public class CreatePlayers {
         // Random index for first Pokemon
         PlayerPokemons aiPlayer = new PlayerPokemons(aiPokemon, "AI Player", (int) (Math.random() * 6));
     }
-    public PlayerPokemons[] returnPlayers() {
-        return new PlayerPokemons[]{player, aiPlayer};
+//    public PlayerPokemons[] returnPlayers() {
+//        return new PlayerPokemons[]{player, aiPlayer};
+//    }
+    public PlayerPokemons returnPlayer() {
+        return player;
+    }
+
+    public PlayerPokemons returnAI() {
+        return aiPlayer;
     }
 }
