@@ -27,13 +27,11 @@ public class GameState {
         Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
 
         CreatePlayers createPlayers = new CreatePlayers(allPokemonNames, allPokemonsObjects);
-//        PlayerPokemons[] players = createPlayers.returnPlayers();
+        PlayerPokemons[] players = createPlayers.returnPlayers();
 
-        PlayerPokemons player = new createPlayers.returnPlayer();
-        PlayerPokemons aiPlayer = new createPlayers.returnAI();
+        PlayerPokemons player = players[0];
+        PlayerPokemons aiPlayer = players[1];
 
-//        System.out.println(player.getName());
-//        System.out.println(aiPlayer.getName());
         RunGame playGame = new RunGame(player, aiPlayer);
     }
 

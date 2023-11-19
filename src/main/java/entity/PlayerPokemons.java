@@ -21,4 +21,4 @@ public class PlayerPokemons {
     public String getName() {
         return name;
     }
-    }
+}
