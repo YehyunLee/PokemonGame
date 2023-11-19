@@ -3,8 +3,6 @@ package use_case;
 import entity.PlayerPokemons;
 import entity.Pokemon;
 
-import java.util.Scanner;
-
 public class GameState {
     public String turn = "Player";
 
@@ -29,9 +27,14 @@ public class GameState {
         Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
 
         CreatePlayers createPlayers = new CreatePlayers(allPokemonNames, allPokemonsObjects);
-        PlayerPokemons[] players = createPlayers.returnPlayers();
-        player = players[0];
-        aiPlayer = players[1];
+//        PlayerPokemons[] players = createPlayers.returnPlayers();
+
+        PlayerPokemons player = new createPlayers.returnPlayer();
+        PlayerPokemons aiPlayer = new createPlayers.returnAI();
+
+//        System.out.println(player.getName());
+//        System.out.println(aiPlayer.getName());
+        RunGame playGame = new RunGame(player, aiPlayer);
     }
 
 }

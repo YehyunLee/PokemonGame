@@ -17,4 +17,8 @@ public class PlayerPokemons {
         this.firstPokemon = firstPokemon;
         this.currentPokemonIndex = firstPokemon;
     }
-}
+
+    public String getName() {
+        return name;
+    }
+    }
