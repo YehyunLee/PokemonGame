@@ -94,6 +94,7 @@ public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
         }
 
         // Return the response data as a JSONArray (may be empty if not found)
+        System.out.println(responseData);
         return responseData;
     }
 }

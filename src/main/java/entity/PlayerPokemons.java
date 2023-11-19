@@ -1,24 +1,29 @@
 package entity;
 
 public class PlayerPokemons {
-    private String name = "";
+    private String type = "";
     private Pokemon[] pokemons = new Pokemon[0];
     private int firstPokemon = 0;
     private int currentPokemonIndex = 0;
 
-    // Create a method for changing chosenPokemon value
-    public void switchPokemon(int newChosenPokemonIndex) {
-        this.currentPokemonIndex = newChosenPokemonIndex;
-    }
-
-    public PlayerPokemons(Pokemon[] pokemons, String name, int firstPokemon) {
-        this.name = name;
+    public PlayerPokemons(Pokemon[] pokemons, String type, int firstPokemon) {
+        this.type = type;
         this.pokemons = pokemons;
         this.firstPokemon = firstPokemon;
         this.currentPokemonIndex = firstPokemon;
     }
 
-    public String getName() {
-        return name;
+
+    public Pokemon getActivePokemon() {
+        return pokemons[currentPokemonIndex];
+    };
+
+    public void printAllAlivePokemon() {
+        for (Pokemon p : pokemons)  {
+            if (p.isAlive) {
+                p.printAllStats();
+            }
+        }
     }
+
 }
