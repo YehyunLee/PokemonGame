@@ -23,11 +23,13 @@ public class GameState {
     }
 
     public GameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
+        // Constructor
         CreateAllPokemons allPokemons = new CreateAllPokemons(factory, allPokemonNames);
-        Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
+        Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();  // call method
 
+        // Constructor
         CreatePlayers createPlayers = new CreatePlayers(allPokemonNames, allPokemonsObjects);
-        PlayerPokemons[] players = createPlayers.returnPlayers();
+        PlayerPokemons[] players = createPlayers.returnPlayers();  // call method
 
         PlayerPokemons player = players[0];
         PlayerPokemons aiPlayer = players[1];

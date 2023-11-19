@@ -20,6 +20,7 @@ public class Main {
         // [Parse data]
         // Create an instance of PokemonFactoryFromData and inject the data access object
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
+        // This gets Pokemon names that exists in sprites, supported by API, and no duplicates. It handles all errors.
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
         // [Run game]

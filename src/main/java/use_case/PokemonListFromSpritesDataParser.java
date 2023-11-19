@@ -55,18 +55,30 @@ public class PokemonListFromSpritesDataParser {
      * Get user dir, access front/back sprites folder, and fetch all Pokemon numbers
      * Then call containsMatchingSprite to get intersection of front/back sprites
      * (This is to avoid missing sprites)
+     * Lastly, remove the pokemon names that includes string, not number (ID) to avoid
+     * API call error. (API only support full pokemon name or just number id)
      * @return return number(ID) of all Pokemons
      **/
     public String[] getCombinedListOfPokemonNumbers() {
         List<String> combinedSprites = new ArrayList<>();
         for (String frontSprite : frontSprites) {
             if (containsMatchingSprite(backSprites, frontSprite)) {
-                combinedSprites.add(
-                        extractPokemonNumber(frontSprite));
+                String pokemonNumber = extractPokemonNumber(frontSprite);
+                // do not add if string has chr not number. everything must be number.
+                if (pokemonNumber.matches("[0-9]+"))
+                {
+                    // due to api lack of support, id must be between 1-1010; inclusive
+                    if (Integer.parseInt(pokemonNumber) > 0 && Integer.parseInt(pokemonNumber) < 1011) {
+                        combinedSprites.add(pokemonNumber);
+                    }
+                }
+                else {
+                    System.out.println("Pokemon number(ID) is not number: " + pokemonNumber);
+                }
             }
         }
+        System.out.println("Names of all Pokemon IDs: " + combinedSprites);
         combinedSprites.toArray(new String[0]);
-
         return combinedSprites.toArray(new String[0]);
     }
 
@@ -78,13 +90,12 @@ public class PokemonListFromSpritesDataParser {
     public String[] getAllPokemonNamesNoDuplicate(PokemonApiCallInterface apiDataAccess) {
         String[] allPokemonNumbers = getCombinedListOfPokemonNumbers();
         // [DEVELOPMENT] Limit number of Pokemons
-        allPokemonNumbers = Arrays.copyOfRange(allPokemonNumbers, 0, 10);
+//         allPokemonNumbers = Arrays.copyOfRange(allPokemonNumbers, 0, 200);
         List<String> allPokemonNames = new ArrayList<>();
         for (String pokemonNumber : allPokemonNumbers) {
             // get Pokemon name from API
             PokemonApiCallParser parser = new PokemonApiCallParser(apiDataAccess);
             Map<String, Object> apiDataList = parser.fetchPokemonData(pokemonNumber);
-
             for (Map.Entry<String, Object> entry : apiDataList.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
