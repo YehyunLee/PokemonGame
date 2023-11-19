@@ -5,7 +5,7 @@ public class Pokemon {
     Integer health = 0;
     Integer attack = 0;
     Integer defense = 0;
-    entity.Move[] moves = new entity.Move[0];
+    Moves[] moves = new Moves[0];
     String frontSprite = "";
     String backSprite = "";
 
@@ -24,7 +24,7 @@ public class Pokemon {
     public Integer getDefense() {
         return defense;
     }
-    public entity.Move[] getMoves() {
+    public Moves[] getMoves() {
         return moves;
     }
     public String getFrontSprite() {
@@ -52,7 +52,7 @@ public class Pokemon {
     public void setDefense(Integer defense) {
         this.defense = defense;
     }
-    public void setMoves(entity.Move[] moves) {
+    public void setMoves(Moves[] moves) {
         this.moves = moves;
     }
     public void setFrontSprite(String frontSprite) {
