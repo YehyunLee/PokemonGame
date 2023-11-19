@@ -2,12 +2,16 @@ package entity;
 
 public class Defense extends Moves {
     String name;
-    float defense;
+    float lightDefense;
+    float heavyDefense;
 
-    public Defense(String name, float defense){
+    public Defense(String name, float lightDefense, float heavyDefense){
         super(name);
-        this.defense = defense;
+        this.lightDefense = lightDefense;
+        this.heavyDefense = heavyDefense;
     }
 
-    public float getDefense(){return defense;}
+    public float getLightDefense(){return lightDefense;}
+
+    public float getHeavyDefense(){return heavyDefense;}
 }

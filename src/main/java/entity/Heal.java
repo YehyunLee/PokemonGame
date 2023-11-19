@@ -2,12 +2,16 @@ package entity;
 
 public class Heal extends Moves {
     String name;
-    float healAmount;
+    float lightHeal;
+    float heavyheal;
 
-    public Heal(String name, float healAmount){
+    public Heal(String name, float lightHeal, float heavyHeal){
         super(name);
-        this.healAmount = healAmount;
+        this.lightHeal = lightHeal;
+        this.heavyheal = heavyHeal;
     }
 
-    public float getHeal(){return healAmount;}
+    public float getLightHeal(){return lightHeal;}
+
+    public float getHeavyheal(){return heavyheal;}
 }
