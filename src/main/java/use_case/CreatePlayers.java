@@ -43,6 +43,13 @@ public class CreatePlayers {
         for (int i = 0; i < 6; i++) {
             aiPokemon[i] = allPokemonsObjects[(int) (Math.random() * allPokemonsObjects.length)];
         }
+
+        // duplicate pokemons
+        Pokemon[] duplicate;
+        duplicate = aiPokemon.clone();
+        aiPokemon = duplicate;
+
+        
         // Random index for first Pokemon
         PlayerPokemons aiPlayer = new PlayerPokemons(aiPokemon, "AI Player", (int) (Math.random() * 6));
 
