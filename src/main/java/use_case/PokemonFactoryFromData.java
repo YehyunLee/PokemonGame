@@ -78,8 +78,6 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
                 case "defense":
                     pokemon.setDefense((Integer) value);
                     break;
-                case "speed":
-                    pokemon.setSpeed((Integer) value);
                 default:
                     break;
             }
