@@ -2,14 +2,14 @@ package entity;
 
 public class GameState {
     public Boolean GameOver = false;
-    public PlayerorAiPokemons player;
-    public PlayerorAiPokemons aiPlayer;
+    public PlayerPokemons player;
+    public PlayerPokemons aiPlayer;
 
     public Pokemon ActivePlayerPokemon;
     public Pokemon ActiveAiPokemon;
 
 
-    public void initializeGameState(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
+    public void initializeGameState(PlayerPokemons player, PlayerPokemons aiPlayer) {
         this.GameOver = false;
         this.player = player;
         this.aiPlayer = aiPlayer;
@@ -17,5 +17,12 @@ public class GameState {
         ActivePlayerPokemon = player.getActivePokemon();
         ActiveAiPokemon = aiPlayer.getActivePokemon();
     }
+
+
+
+
+
+
+
 
 }

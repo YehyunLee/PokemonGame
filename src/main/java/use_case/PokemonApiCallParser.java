@@ -58,7 +58,6 @@ public class PokemonApiCallParser {
                     dataMap.put("hp", baseStats.optInt("hp"));
                     dataMap.put("attack", baseStats.optInt("attack"));
                     dataMap.put("defense", baseStats.optInt("defense"));
-                    dataMap.put("speed", baseStats.optInt("speed"));
                 }
             }
         } catch (JSONException e) {
