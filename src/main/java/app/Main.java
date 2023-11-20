@@ -4,11 +4,8 @@ import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
-import entity.PlayerPokemons;
 import use_case.PokemonFactoryFromData;
-import entity.Pokemon;
-import java.util.Scanner;
-import use_case.GameState;
+import use_case.InitializeGameState;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,6 +20,6 @@ public class Main {
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
         // [Run game]
-        GameState gameState = new GameState(factory, allPokemonNames);
+        InitializeGameState gameState = new InitializeGameState(factory, allPokemonNames);
     }
 }

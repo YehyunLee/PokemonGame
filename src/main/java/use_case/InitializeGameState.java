@@ -1,13 +1,14 @@
 package use_case;
 
-import entity.PlayerPokemons;
+import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 
-public class GameState {
+
+public class InitializeGameState {
     public String turn = "Player";
 
-    public PlayerPokemons player;
-    public PlayerPokemons aiPlayer;
+    public PlayerorAiPokemons player;
+    public PlayerorAiPokemons aiPlayer;
 
     public String getGameState() {
         return turn;
@@ -22,15 +23,16 @@ public class GameState {
         return turn;
     }
 
-    public GameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
+    public InitializeGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
         CreateAllPokemons allPokemons = new CreateAllPokemons(factory, allPokemonNames);
         Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
 
         CreatePlayers createPlayers = new CreatePlayers(allPokemonNames, allPokemonsObjects);
-        PlayerPokemons[] players = createPlayers.returnPlayers();
+        PlayerorAiPokemons[] players = createPlayers.returnPlayers();
 
-        PlayerPokemons player = players[0];
-        PlayerPokemons aiPlayer = players[1];
+        PlayerorAiPokemons player = players[0];
+        PlayerorAiPokemons aiPlayer = players[1];
+
 
         RunGame playGame = new RunGame(player, aiPlayer);
     }
