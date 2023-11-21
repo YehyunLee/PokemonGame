@@ -1,6 +1,6 @@
 package entity;
 
-public class PlayerPokemons {
+public class PlayerorAiPokemons {
     private String name = "";
     private Pokemon[] pokemons = new Pokemon[0];
     private int firstPokemon = 0;
@@ -11,7 +11,7 @@ public class PlayerPokemons {
         this.currentPokemonIndex = newChosenPokemonIndex;
     }
 
-    public PlayerPokemons(Pokemon[] pokemons, String name, int firstPokemon) {
+    public PlayerorAiPokemons(Pokemon[] pokemons, String name, int firstPokemon) {
         this.name = name;
         this.pokemons = pokemons;
         this.firstPokemon = firstPokemon;

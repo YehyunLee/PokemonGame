@@ -62,18 +62,21 @@ public class PokemonListFromSpritesDataParser {
     public String[] getCombinedListOfPokemonNumbers() {
         List<String> combinedSprites = new ArrayList<>();
         for (String frontSprite : frontSprites) {
-            if (containsMatchingSprite(backSprites, frontSprite)) {
-                String pokemonNumber = extractPokemonNumber(frontSprite);
-                // do not add if string has chr not number. everything must be number.
-                if (pokemonNumber.matches("[0-9]+"))
-                {
-                    // due to api lack of support, id must be between 1-1010; inclusive
-                    if (Integer.parseInt(pokemonNumber) > 0 && Integer.parseInt(pokemonNumber) < 1011) {
-                        combinedSprites.add(pokemonNumber);
+            String frontPokemonNumber = extractPokemonNumber(frontSprite);
+            for (String backSprite : backSprites) {
+                String backPokemonNumber = extractPokemonNumber(backSprite);
+                // only add if front and back sprites are same
+                if (frontPokemonNumber.equals(backPokemonNumber)) {
+                    String pokemonNumber = extractPokemonNumber(frontSprite);
+                    // do not add if string has chr not number. everything must be number.
+                    if (pokemonNumber.matches("[0-9]+")) {
+                        // due to api lack of support, id must be between 1-1010; inclusive
+                        if (Integer.parseInt(pokemonNumber) > 0 && Integer.parseInt(pokemonNumber) < 1011) {
+                            combinedSprites.add(pokemonNumber);
+                        }
+                    } else {
+                        System.out.println("Pokemon number(ID) is not number: " + pokemonNumber);
                     }
-                }
-                else {
-                    System.out.println("Pokemon number(ID) is not number: " + pokemonNumber);
                 }
             }
         }
@@ -90,26 +93,29 @@ public class PokemonListFromSpritesDataParser {
     public String[] getAllPokemonNamesNoDuplicate(PokemonApiCallInterface apiDataAccess) {
         String[] allPokemonNumbers = getCombinedListOfPokemonNumbers();
         // [DEVELOPMENT] Limit number of Pokemons
-//         allPokemonNumbers = Arrays.copyOfRange(allPokemonNumbers, 0, 200);
+        allPokemonNumbers = Arrays.copyOfRange(allPokemonNumbers, 0, 100);
         List<String> allPokemonNames = new ArrayList<>();
-        for (String pokemonNumber : allPokemonNumbers) {
-            // get Pokemon name from API
-            PokemonApiCallParser parser = new PokemonApiCallParser(apiDataAccess);
-            Map<String, Object> apiDataList = parser.fetchPokemonData(pokemonNumber);
-            for (Map.Entry<String, Object> entry : apiDataList.entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
-                switch (key) {
-                    case "name":
-                        String pokemonName = (String) value;
-                        allPokemonNames.add(pokemonName);
-                        break;
-                }
-            }
-        }
-        // remove duplicate
-        allPokemonNames = new ArrayList<>(new HashSet<>(allPokemonNames));
-        return allPokemonNames.toArray(new String[0]);
+//        Code for returning names not IDs
+//        for (String pokemonNumber : allPokemonNumbers) {
+//            // get Pokemon name from API
+//            PokemonApiCallParser parser = new PokemonApiCallParser(apiDataAccess);
+//            Map<String, Object> apiDataList = parser.fetchPokemonData(pokemonNumber);
+//            for (Map.Entry<String, Object> entry : apiDataList.entrySet()) {
+//                String key = entry.getKey();
+//                Object value = entry.getValue();
+//                switch (key) {
+//                    case "name":
+//                        String pokemonName = (String) value;
+//                        allPokemonNames.add(pokemonName);
+//                        break;
+//                }
+//            }
+//        }
+//        // remove duplicate
+//        allPokemonNames = new ArrayList<>(new HashSet<>(allPokemonNames));
+//        return allPokemonNames.toArray(new String[0]);
+
+        return allPokemonNumbers;
     }
 
     /**

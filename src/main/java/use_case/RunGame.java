@@ -1,9 +1,9 @@
 package use_case;
 
-import entity.PlayerPokemons;
+import entity.PlayerorAiPokemons;
 
 public class RunGame {
-    public RunGame(PlayerPokemons player, PlayerPokemons aiPlayer) {
+    public RunGame(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
         System.out.println(player.getName());
         System.out.println(aiPlayer.getName());
     }
