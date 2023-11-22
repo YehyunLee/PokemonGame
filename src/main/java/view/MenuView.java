@@ -1,28 +1,58 @@
 package view;
+import interface_adapters.menu.MenuController;
+import interface_adapters.menu.MenuViewModel;
+
 import javax.swing.*;
-public class MenuView extends JFrame {
-    JFrame frame = new JFrame("Main Menu");
-    JPanel panel = new JPanel();
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-    JButton buttonStart = new JButton("Start");
-    JButton buttonExit = new JButton("Exit");
-    JButton buttonMusic = new JButton("Music");
-    JLabel label = new JLabel("Welcome!");
-    public MenuView() {
-        panel.setLayout(null);
-        label.setBounds(10, 20, 120, 25);
-        panel.add(label);
-        buttonStart.setBounds(10, 80, 80, 25);
-        panel.add(buttonStart);
-        buttonExit.setBounds(10, 110, 80, 25);
-        panel.add(buttonExit);
-        buttonMusic.setBounds(10, 140, 80, 25);
-        panel.add(buttonMusic);
-        frame.add(panel);
+public class MenuView extends JFrame implements ActionListener, PropertyChangeListener {
+    public final String viewName = "menu";
+    private final MenuController menuController;
+    private final MenuViewModel menuViewModel;
+//    private final JButton start;
+//    private final ImageIcon image;
 
-        frame.setSize(300, 300);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+    public MenuView(MenuController controller, MenuViewModel menuViewModel) {
+    this.menuController = controller;
+    this.menuViewModel = menuViewModel;
+    menuViewModel.addPropertyChangeListener(this); //this registers the view as a listener to the view model
+
+//    setExtendedState(JFrame.MAXIMIZED_BOTH);
+//    setResizable(false);
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    ImageIcon image = new ImageIcon(MenuViewModel.IMAGE_PATH);
+    this.setIconImage(image.getImage());
+
+    JLabel title = new JLabel(MenuViewModel.TITLE_LABEL);
+    title.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    title.setAlignmentY(JLabel.CENTER_ALIGNMENT);
+
+    JPanel buttons = new JPanel();
+    JButton start = new JButton(MenuViewModel.START_BUTTON_LABEL);
+    buttons.add(start);
+
+    start.addActionListener(new ActionListener()     {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(start)) {menuController.execute();}}});
+
+    this.add(title);
+    this.add(buttons);
+    this.setSize(300, 300);
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
