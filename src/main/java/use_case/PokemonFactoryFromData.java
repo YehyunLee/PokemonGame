@@ -23,7 +23,7 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
     public PokemonFactoryFromData(PokemonApiCallInterface dataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
         this.apiDataAccess = dataAccess;
         this.spriteParser = new PokemonListFromSpritesDataParser(spritesDataAccess);
-        spriteParser.SaveAllSprites(); // Fetch and save all sprites' data. Ran only once to maxmise efficiency.
+        spriteParser.SaveAllSprites(); // Fetch and save all sprites' data. Ran only once to maximise efficiency.
     }
 
     /**
