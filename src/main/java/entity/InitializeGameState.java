@@ -1,6 +1,6 @@
 package entity;
 
-public class GameState {
+public class InitializeGameState {
     public Boolean GameOver = false;
     public PlayerorAiPokemons player;
     public PlayerorAiPokemons aiPlayer;

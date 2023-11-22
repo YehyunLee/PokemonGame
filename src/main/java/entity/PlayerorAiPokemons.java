@@ -13,9 +13,6 @@ public class PlayerorAiPokemons {
         this.currentPokemonIndex = firstPokemon;
     }
 
-    public String getName() {
-        return name;
-
     public Boolean isSwapPokemonAlive(int index) {
         if (pokemons[index].getIsAlive()) {
             return true;
