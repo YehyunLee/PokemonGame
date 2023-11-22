@@ -1,18 +1,18 @@
 package use_case;
 
 import entity.PlayerorAiPokemons;
-import entity.GameState;
+import entity.InitializeGameState;
 import entity.Pokemon;
 
 import java.util.Scanner;
 import java.util.Random;
 
 public class RunGame {
-    private static GameState gameState;
+    private static InitializeGameState gameState;
     private final Scanner scanner = new Scanner(System.in);
 
     public RunGame(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
-        gameState = new GameState(); // Initialize gameState in the constructor
+        gameState = new InitializeGameState(); // Initialize gameState in the constructor
         gameState.initializeGameState(player, aiPlayer);
 
 
