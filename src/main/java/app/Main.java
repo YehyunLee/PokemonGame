@@ -21,6 +21,6 @@ public class Main {
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
         // [Run game]
-        InitilizeGameState initilizeGameState = new InitilizeGameState(factory, allPokemonNames);
+        InitializeGameState gameState = new InitializeGameState(factory, allPokemonNames);
     }
 }
