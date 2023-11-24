@@ -36,7 +36,7 @@ public class PokemonListFromSpritesDataParser {
         // Get front and back all sprite lists and save locally
         this.frontSprites = spritesDataAccess.getRawListOfPokemonSprites("");
         this.backSprites = spritesDataAccess.getRawListOfPokemonSprites("back");
-        System.out.println("All sprites saved locally.");
+        //System.out.println("All sprites saved locally.");
     }
 
     /**
@@ -75,12 +75,12 @@ public class PokemonListFromSpritesDataParser {
                             combinedSprites.add(pokemonNumber);
                         }
                     } else {
-                        System.out.println("Pokemon number(ID) is not number: " + pokemonNumber);
+                        // System.out.println("Pokemon number(ID) is not number: " + pokemonNumber);
                     }
                 }
             }
         }
-        System.out.println("Names of all Pokemon IDs: " + combinedSprites);
+        //System.out.println("Names of all Pokemon IDs: " + combinedSprites);
         combinedSprites.toArray(new String[0]);
         return combinedSprites.toArray(new String[0]);
     }
