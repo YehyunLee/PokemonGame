@@ -16,7 +16,7 @@ public class CreateAllPokemons {
         Pokemon[] allPokemon = new Pokemon[allPokemonNames.length];
         for (int i = 0; i < allPokemonNames.length; i++) {
             allPokemon[i] = factory.createPokemonFromData(allPokemonNames[i]);
-            allPokemon[i].printAllStats();
+            //allPokemon[i].printAllStats();
         }
         return allPokemon;
     }

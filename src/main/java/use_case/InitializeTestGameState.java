@@ -1,11 +1,9 @@
 package use_case;
 
 import entity.PlayerorAiPokemons;
-import use_case.CreatePlayersTest;
-import entity.Pokemon;
 
 
-public class InitializeGameState {
+public class InitializeTestGameState {
 
     // Did not end up using these so we can delete - Tyseer
 
@@ -28,7 +26,7 @@ public class InitializeGameState {
 //        return turn;
 //    }
 
-    public InitializeGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
+    public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
 
         // This is all the code to Initilize Gamestate with all the Pokemons, DONT DELETE!
 //        CreateAllPokemons allPokemons = new CreateAllPokemons(factory, allPokemonNames);

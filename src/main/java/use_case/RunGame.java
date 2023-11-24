@@ -1,18 +1,18 @@
 package use_case;
 
 import entity.PlayerorAiPokemons;
-import entity.InitializeGameState;
+import entity.GameState;
 import entity.Pokemon;
 
 import java.util.Scanner;
 import java.util.Random;
 
 public class RunGame {
-    private static InitializeGameState gameState;
+    private static GameState gameState;
     private final Scanner scanner = new Scanner(System.in);
 
     public RunGame(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
-        gameState = new InitializeGameState(); // Initialize gameState in the constructor
+        gameState = new GameState(); // Initialize gameState in the constructor
         gameState.initializeGameState(player, aiPlayer);
 
 
@@ -22,17 +22,11 @@ public class RunGame {
 
 
         while (!gameState.GameOver) {
-//            String speedCompare = determineFirstPokemon(gameState.player.getActivePokemon().getSpeed(),
-//                    gameState.aiPlayer.getActivePokemon().getSpeed());
-//
-//            if (speedCompare.equals("Pokemon 1")) {
-//                playMove(player, aiPlayer);
-//            } else {
-//               playRandomMove(player, aiPlayer);
-//            }
-
-            playMove(player, aiPlayer);
-            playRandomMove(player, aiPlayer);
+            if (gameState.isPlayerTurn) {
+                playMove(gameState.player, gameState.aiPlayer);
+            } else {
+                playRandomMove(gameState.player, gameState.aiPlayer);
+            }
         }
     }
 
@@ -103,18 +97,6 @@ public class RunGame {
         System.out.println("Switched to Pokémon " + playerorAiPokemons.getActivePokemon().getName());
     }
 
-
-    public static String determineFirstPokemon(int speed1, int speed2) {
-        Random random = new Random();
-        double probability1 = (double) speed1 / (speed1 + speed2); // Probability of Pokemon 1 going first
-        double randomValue = random.nextDouble();
-
-        if (randomValue < probability1) {
-            return "Pokemon 1";
-        } else {
-            return "Pokemon 2";
-        }
-    }
 
     public void playMove(PlayerorAiPokemons player, PlayerorAiPokemons opponent) {
         boolean continueMove = true; // Flag to control the loop
@@ -222,6 +204,7 @@ public class RunGame {
                     break;
             }
         }
+        gameState.reverseIsPlayerTurn();
     }
 
 
@@ -284,6 +267,7 @@ public class RunGame {
                 }
                 break;
         }
+        gameState.reverseIsPlayerTurn();
     }
 
     private double getMovePower(String moveCategory, String moveName) {
@@ -299,7 +283,13 @@ public class RunGame {
 
         if (opponent.getActivePokemon().getHealth() <= 0) {
             System.out.println(opponent.getActivePokemon().getName() + " Fainted!");
-            SwitchRandomPokemon(opponent);
+            opponent.getActivePokemon().die();
+            opponent.getActivePokemon().setHealth(0);
+            if (player.getType().equals("AI Player") ) {
+                SwitchPokemon(opponent);
+            } else {
+                SwitchRandomPokemon(opponent);
+            }
             return result;
         }
 

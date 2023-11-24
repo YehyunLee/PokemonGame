@@ -1,9 +1,11 @@
 package entity;
 
-public class InitializeGameState {
+public class GameState {
     public Boolean GameOver = false;
     public PlayerorAiPokemons player;
     public PlayerorAiPokemons aiPlayer;
+
+    public Boolean isPlayerTurn = true;
 
     public Pokemon ActivePlayerPokemon;
     public Pokemon ActiveAiPokemon;
@@ -16,6 +18,10 @@ public class InitializeGameState {
 
         ActivePlayerPokemon = player.getActivePokemon();
         ActiveAiPokemon = aiPlayer.getActivePokemon();
+    }
+
+    public void reverseIsPlayerTurn() {
+        this.isPlayerTurn = !this.isPlayerTurn;
     }
 
 }

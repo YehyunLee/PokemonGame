@@ -1,7 +1,7 @@
 package entity;
 
 public class PlayerorAiPokemons {
-    private String type = "";
+    public String type = "";
     public Pokemon[] pokemons = new Pokemon[0];
     private int firstPokemon = 0;
     private int currentPokemonIndex = 0;
@@ -44,5 +44,9 @@ public class PlayerorAiPokemons {
     public int getCurrentPokemonIndex() {
         return currentPokemonIndex;
 
+    }
+
+    public String getType() {
+        return this.type;
     }
 }

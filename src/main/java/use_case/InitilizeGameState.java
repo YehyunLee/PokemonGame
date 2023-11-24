@@ -4,23 +4,6 @@ import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 
 public class InitilizeGameState {
-    public String turn = "Player";
-
-    public PlayerorAiPokemons player;
-    public PlayerorAiPokemons aiPlayer;
-
-    public String getGameState() {
-        return turn;
-    }
-
-    public String changeTurn() {
-        if (turn.equals("Player")) {
-            turn = "AI Player";
-        } else {
-            turn = "Player";
-        }
-        return turn;
-    }
 
     public InitilizeGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
         // Constructor
@@ -33,8 +16,7 @@ public class InitilizeGameState {
 
         PlayerorAiPokemons player = players[0];
         PlayerorAiPokemons aiPlayer = players[1];
-
-        RunGame playGame = new RunGame(player, aiPlayer);
+        new RunGame(player, aiPlayer);
     }
 
 }

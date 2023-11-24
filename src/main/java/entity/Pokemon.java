@@ -131,13 +131,13 @@ public class Pokemon {
     // Print the data for the Pokemon Object
     public void printAllStats() {
         System.out.println("Pokemon Data:");
-//        System.out.println("Name: " + this.getName());
-//        System.out.println("HP: " + this.getHealth());
-//        System.out.println("Attack: " + this.getAttack());
-//        System.out.println("Defense: " + this.getDefense());
-//        System.out.println("Number: " + this.getNumber());
-//        System.out.println("FrontSprite: " + this.getFrontSprite());
-//        System.out.println("BackSprite: " + this.getBackSprite());
+        System.out.println("Name: " + this.getName());
+        System.out.println("HP: " + this.getHealth());
+        System.out.println("Attack: " + this.getAttack());
+        System.out.println("Defense: " + this.getDefense());
+        System.out.println("Number: " + this.getNumber());
+        System.out.println("FrontSprite: " + this.getFrontSprite());
+        System.out.println("BackSprite: " + this.getBackSprite());
         System.out.println("IsAlive: " + this.getIsAlive());
     }
 

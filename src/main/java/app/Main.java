@@ -4,8 +4,10 @@ import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
+import entity.Pokemon;
 import use_case.PokemonFactoryFromData;
 import use_case.InitilizeGameState;
+import use_case.InitializeTestGameState;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,5 +24,8 @@ public class Main {
 
         // [Run game]
         InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
+        //InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
+//        Pokemon p = factory.createPokemonFromData("Pikachu");
+//        p.printAllStats();
     }
 }
