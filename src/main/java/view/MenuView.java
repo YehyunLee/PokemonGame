@@ -30,7 +30,9 @@ public class MenuView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add your code here to start the actual game
-                JOptionPane.showMessageDialog(frame, "Starting the Game!");
+//                JOptionPane.showMessageDialog(frame, "Starting the Game!");
+                GameView gameView = new GameView();
+                gameView.startGame(frame);
             }
         });
 
@@ -99,4 +101,7 @@ public class MenuView {
             }
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // [2] CODE for choosing Pokemons
 }
