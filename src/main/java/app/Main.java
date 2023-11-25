@@ -12,7 +12,7 @@ import view.MenuView;
 
 public class Main {
     public static void main(String[] args) {
-        // Initialize the API and sprite data access objects
+//        //Initialize the API and sprite data access objects
 //        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
 //        PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 //
@@ -22,6 +22,7 @@ public class Main {
 //
 //        // Create the game state
 //        InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
+////        InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
 
         // Create an instance of MenuView and display the Main Menu
         MenuView menuView = new MenuView();
