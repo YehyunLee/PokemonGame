@@ -33,9 +33,14 @@ public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
         // Initialize a variable to store the API response data
         JSONArray responseData = new JSONArray();
         try {
-            // Make an HTTP request to fetch Pokémon data and store the response
-//            responseData = makeHttpRequest(pokemonName);
-            responseData = savedMakeHttpRequest(pokemonName);
+            // if pokemonName is numbers only, call savedMakeHttpRequest if not call makeHttpRequest
+            if (pokemonName.matches("[0-9]+")) {
+                // Call by using pickle file which already have been saved
+                responseData = savedMakeHttpRequest(pokemonName);
+            } else {
+                // Make an HTTP request to fetch Pokémon data and store the response
+                responseData = makeHttpRequest(pokemonName);
+            }
         } catch (IOException e) {
             // return empty array if error occurs
             return new JSONArray();
