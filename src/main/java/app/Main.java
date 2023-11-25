@@ -8,24 +8,23 @@ import entity.Pokemon;
 import use_case.PokemonFactoryFromData;
 import use_case.InitilizeGameState;
 import use_case.InitializeTestGameState;
+import view.MenuView;
 
 public class Main {
     public static void main(String[] args) {
+        // Initialize the API and sprite data access objects
+//        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
+//        PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
+//
+//        // Create an instance of PokemonFactoryFromData and inject the data access objects
+//        PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
+//        String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
+//
+//        // Create the game state
+//        InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
 
-        // [Getting ready for api, get data, and store]
-        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
-        PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
-
-        // [Parse data]
-        // Create an instance of PokemonFactoryFromData and inject the data access object
-        PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
-        // This gets Pokemon names that exists in sprites, supported by API, and no duplicates. It handles all errors.
-        String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
-
-        // [Run game]
-        InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
-        //InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
-//        Pokemon p = factory.createPokemonFromData("Pikachu");
-//        p.printAllStats();
+        // Create an instance of MenuView and display the Main Menu
+        MenuView menuView = new MenuView();
+        MenuView.displayMainView();
     }
 }
