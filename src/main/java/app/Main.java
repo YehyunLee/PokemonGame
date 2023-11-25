@@ -4,11 +4,10 @@ import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
-import entity.PlayerPokemons;
-import use_case.PokemonFactoryFromData;
 import entity.Pokemon;
-import java.util.Scanner;
-import use_case.GameState;
+import use_case.PokemonFactoryFromData;
+import use_case.InitilizeGameState;
+import use_case.InitializeTestGameState;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,9 +19,13 @@ public class Main {
         // [Parse data]
         // Create an instance of PokemonFactoryFromData and inject the data access object
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
+        // This gets Pokemon names that exists in sprites, supported by API, and no duplicates. It handles all errors.
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
         // [Run game]
-        GameState gameState = new GameState(factory, allPokemonNames);
+        InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
+        //InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
+//        Pokemon p = factory.createPokemonFromData("Pikachu");
+//        p.printAllStats();
     }
 }
