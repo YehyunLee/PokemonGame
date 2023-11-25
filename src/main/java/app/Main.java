@@ -10,10 +10,13 @@ import use_case.InitilizeGameState;
 import use_case.InitializeTestGameState;
 import view.BattleView;
 import view.MenuView;
+import view.GameView;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-         //Initialize the API and sprite data access objects
+        //Initialize the API and sprite data access objects
         PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
         PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 
@@ -29,6 +32,12 @@ public class Main {
 //        MenuView menuView = new MenuView();
 //        MenuView.displayMainView();
 
-        BattleView.DisplayBattleView();
+
+        SwingUtilities.invokeLater(() -> {
+            BattleView newBattle = new BattleView();
+            newBattle.appendToConsoleWithTypingAnimation("Prepare for Battle!");
+            newBattle.appendToConsoleWithTypingAnimation("Choose your move wisely.");
+            newBattle.appendToConsoleWithTypingAnimation("The enemy is strong.");
+        });
     }
 }

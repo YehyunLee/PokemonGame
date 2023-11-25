@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.File;
+import javax.swing.Timer;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BattleView {
 
@@ -15,6 +18,13 @@ public class BattleView {
     private JLabel frontTestLabel;
     private JPanel bottomMenuPanel;
     private BackgroundPanel mainPanel;
+
+    private JTextArea consoleTextArea;
+    private JScrollPane consoleScrollPane;
+
+    private Queue<String> messageQueue = new LinkedList<>();
+    private Timer typingTimer;
+    private boolean isTyping = false;
 
 
     // Custom panel with background image
@@ -42,6 +52,33 @@ public class BattleView {
         frame = new JFrame("Battle View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+
+        typingTimer = new Timer(50, new ActionListener() {
+            private String currentMessage;
+            private int charIndex = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentMessage == null || charIndex >= currentMessage.length()) {
+                    if (messageQueue.isEmpty()) {
+                        typingTimer.stop();
+                        isTyping = false;
+                        return;
+                    }
+                    currentMessage = messageQueue.poll();
+                    if (consoleTextArea.getText().length() > 0) { // Check if there is already text in the console
+                        consoleTextArea.append("\n"); // Start on a new line if there is
+                    }
+                    charIndex = 0;
+                }
+
+                consoleTextArea.append(String.valueOf(currentMessage.charAt(charIndex)));
+                consoleTextArea.setCaretPosition(consoleTextArea.getDocument().getLength()); // Auto-scroll to the bottom
+                charIndex++;
+            }
+        });
+
 
         // Set up the background panel and use it as the main content pane
         BackgroundPanel backgroundPanel = new BackgroundPanel("UIAssets/battle.png");
@@ -77,33 +114,66 @@ public class BattleView {
         gbc.fill = GridBagConstraints.BOTH;
 
         // Back Label
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 0.1;
-        gbc.weighty = 0.1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(backTestLabel, gbc);
+        gbc.gridx = 0; // The first column
+        gbc.gridy = 0; // The first row
+        gbc.gridwidth = 2; // Span two columns
+        gbc.weightx = 0.5; // Request additional horizontal space
+        gbc.weighty = 1; // Request additional vertical space
+        gbc.anchor = GridBagConstraints.CENTER; // Center the component
+        backgroundPanel.add(backTestLabel, gbc);
 
         // Front Label
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 0.1;
-        gbc.weighty = 0.1;
-        gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(frontTestLabel, gbc);
+        gbc.gridx = 3; // The second column
+        gbc.gridy = 0; // Still the first row
+        gbc.gridwidth = 2; // Span two columns
+        gbc.weightx = 0.5; // Request additional horizontal space
+        gbc.weighty = 1; // Request additional vertical space
+        gbc.anchor = GridBagConstraints.CENTER; // Center the component
+        backgroundPanel.add(frontTestLabel, gbc);
 
-        // Bottom Menu Panel
+        // Place the bottom menu panel
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.weightx = 0;
-        gbc.weighty = 0; // Set this to 0 so the bottom menu doesn't expand vertically
-        gbc.anchor = GridBagConstraints.SOUTHWEST; // Anchor the panel to the bottom left
-        gbc.fill = GridBagConstraints.NONE; // No fill as we don't want to stretch the buttons
+        gbc.gridwidth = 1; // Only take up one cell
+        gbc.weightx = 0; // Set weightx to 0 for now
+        gbc.weighty = 0; // Set weighty to 0 as we don't want to stretch vertically
+        gbc.anchor = GridBagConstraints.SOUTHWEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally within its cell
         frame.add(bottomMenuPanel, gbc);
 
-        frame.pack(); // Pack the frame for a compact look
+
+// Initialize the console text area
+        consoleTextArea = new JTextArea();
+        consoleTextArea.setEditable(false);
+        consoleTextArea.setBackground(new Color(188,162,126)); // Brown color for the box
+        consoleTextArea.setForeground(Color.WHITE); // White text color
+        consoleTextArea.setFont(new Font("SansSerif", Font.BOLD, 18)); // Set the font size and style
+
+// Wrap the text area in a scroll pane
+        consoleScrollPane = new JScrollPane(consoleTextArea);
+        consoleScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+// Adjust constraints for the scroll pane
+        gbc.gridx = 1; // Place it to the right of the buttons
+        gbc.gridy = 1; // Same row as buttons
+        gbc.gridwidth = GridBagConstraints.REMAINDER; // Take up the rest of the row
+        gbc.weightx = 1; // Give it all the remaining horizontal space
+        gbc.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
+        frame.add(consoleScrollPane, gbc);
+
+
+
+        // Pack the frame and make it visible
+        frame.pack();
         frame.setVisible(true);
+    }
+
+    public void appendToConsoleWithTypingAnimation(String message) {
+        messageQueue.add(message);
+        if (!isTyping) {
+            isTyping = true;
+            typingTimer.start();
+        }
     }
 
     private JButton createFixedSizeButtonWithHover(String imageName, String hoverImageName, Dimension size) {
@@ -174,6 +244,14 @@ public class BattleView {
         );
         frontTestLabel.setIcon(new ImageIcon(frontImage));
     }
+
+
+
+    public void appendToConsole(String message) {
+        consoleTextArea.append(message + "\n");
+        consoleTextArea.setCaretPosition(consoleTextArea.getDocument().getLength());
+    }
+
 
     // Static method to display the battle view
     public static void DisplayBattleView() {
