@@ -38,6 +38,7 @@ public class Main {
             newBattle.appendToConsoleWithTypingAnimation("Prepare for Battle!");
             newBattle.appendToConsoleWithTypingAnimation("Choose your move wisely.");
             newBattle.appendToConsoleWithTypingAnimation("The enemy is strong.");
+            newBattle.updatePlayerHealth(50);
         });
     }
 }
