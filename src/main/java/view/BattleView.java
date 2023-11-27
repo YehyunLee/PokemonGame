@@ -67,6 +67,19 @@ public class BattleView {
     public GridBagConstraints gbc = new GridBagConstraints();
 
 
+    public BattleView() {
+        initializeFrame();
+        initializeTimer();
+        initializeBackgroundPanel();
+        initializePokemonLabels();
+        initilizeAllButtons();
+        inintilizeHealthBars();
+        initilizeMenuView();
+        initializeFrameLayout();
+        initializeConsoleTextArea();
+        packAndShowFrame();
+    }
+
     // Custom panel with background image
     class BackgroundPanel extends JPanel {
         private Image backgroundImage;
@@ -296,18 +309,6 @@ public class BattleView {
         updateHealthBarPositions();
     }
 
-    public BattleView() {
-        initializeFrame();
-        initializeTimer();
-        initializeBackgroundPanel();
-        initializePokemonLabels();
-        initilizeAllButtons();
-        inintilizeHealthBars();
-        initilizeMenuView();
-        initializeFrameLayout();
-        initializeConsoleTextArea();
-        packAndShowFrame();
-    }
 
     public void appendToConsoleWithTypingAnimation(String message) {
         messageQueue.add(message);
@@ -442,8 +443,6 @@ public class BattleView {
         bottomMenuPanel.add(heavyDefenseButton);
         bottomMenuPanel.add(lightDefenseButton);
         bottomMenuPanel.add(blankButton);
-
-
         bottomMenuPanel.revalidate();
         bottomMenuPanel.repaint();
     }
@@ -465,8 +464,6 @@ public class BattleView {
         bottomMenuPanel.add(heavyHealButton);
         bottomMenuPanel.add(lightHealButton);
         bottomMenuPanel.add(blankButton);
-
-
         bottomMenuPanel.revalidate();
         bottomMenuPanel.repaint();
     }
@@ -527,8 +524,7 @@ public class BattleView {
 
 
     // Method to change the GIFs
-    public void updateGifs(String backGifPath, String frontGifPath) {
-        // This method would also need to scale the new GIFs as done above
+    public void updateFrontGif(String backGifPath) {
         ImageIcon backIcon = new ImageIcon(backGifPath);
         Image backImage = backIcon.getImage().getScaledInstance(
                 backIcon.getIconWidth() * 2,
@@ -536,7 +532,9 @@ public class BattleView {
                 Image.SCALE_DEFAULT
         );
         backTestLabel.setIcon(new ImageIcon(backImage));
+    }
 
+    public void updateBackGif(String frontGifPath) {
         ImageIcon frontIcon = new ImageIcon(frontGifPath);
         Image frontImage = frontIcon.getImage().getScaledInstance(
                 frontIcon.getIconWidth() * 2,

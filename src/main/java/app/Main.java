@@ -39,6 +39,8 @@ public class Main {
             newBattle.appendToConsoleWithTypingAnimation("Choose your move wisely.");
             newBattle.appendToConsoleWithTypingAnimation("The enemy is strong.");
             newBattle.updatePlayerHealth(50);
+            newBattle.updateFrontGif("src/main/java/data_access/sprites/pokemon/showdown/back/487.gif");
+            newBattle.updateBackGif("src/main/java/data_access/sprites/pokemon/showdown/6.gif");
         });
     }
 }
