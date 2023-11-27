@@ -5,11 +5,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.IOException;
 import java.io.File;
 import javax.swing.Timer;
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.swing.JProgressBar;
+
 
 public class BattleView {
 
@@ -25,6 +29,42 @@ public class BattleView {
     private Queue<String> messageQueue = new LinkedList<>();
     private Timer typingTimer;
     private boolean isTyping = false;
+
+    private JButton attackButton;
+
+    private JButton heavyAttackButton;
+    private JButton lightAttackButton;
+    private JButton trueAttackButton;
+    private JButton defenseButton;
+    private JButton heavyDefenseButton;
+    private JButton lightDefenseButton;
+    private JButton healButton;
+    private JButton lightHealButton;
+    private JButton heavyHealButton;
+
+    private JButton swapButton;
+
+    private JButton blankButton;
+
+    private JButton zero;
+    private JButton one;
+
+    private JButton two;
+
+    private JButton three;
+
+    private JButton four;
+
+    private JButton five;
+
+    private JProgressBar playerHealthBar;
+    private JProgressBar enemyHealthBar;
+
+    public BackgroundPanel backgroundPanel = new BackgroundPanel("UIAssets/battle.png");
+
+    public ImageIcon backTestIcon = new ImageIcon("UIAssets/back-test.gif");
+
+    public GridBagConstraints gbc = new GridBagConstraints();
 
 
     // Custom panel with background image
@@ -48,12 +88,13 @@ public class BattleView {
     }
 
 
-    public BattleView() {
+    private void initializeFrame() {
         frame = new JFrame("Battle View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
 
-
+    private void initializeTimer() {
         typingTimer = new Timer(50, new ActionListener() {
             private String currentMessage;
             private int charIndex = 0;
@@ -67,49 +108,135 @@ public class BattleView {
                         return;
                     }
                     currentMessage = messageQueue.poll();
-                    if (consoleTextArea.getText().length() > 0) { // Check if there is already text in the console
-                        consoleTextArea.append("\n"); // Start on a new line if there is
+                    if (consoleTextArea.getText().length() > 0) {
+                        consoleTextArea.append("\n");
                     }
                     charIndex = 0;
                 }
 
                 consoleTextArea.append(String.valueOf(currentMessage.charAt(charIndex)));
-                consoleTextArea.setCaretPosition(consoleTextArea.getDocument().getLength()); // Auto-scroll to the bottom
+                consoleTextArea.setCaretPosition(consoleTextArea.getDocument().getLength());
                 charIndex++;
             }
         });
+    }
 
-
-        // Set up the background panel and use it as the main content pane
-        BackgroundPanel backgroundPanel = new BackgroundPanel("UIAssets/battle.png");
+    private void initializeBackgroundPanel() {
         backgroundPanel.setLayout(new GridBagLayout());
         frame.setContentPane(backgroundPanel);
+    }
 
-        ImageIcon backTestIcon = new ImageIcon("UIAssets/back-test.gif");
-        backTestLabel = new JLabel(new ImageIcon(backTestIcon.getImage().getScaledInstance(
-                backTestIcon.getIconWidth() * 2,
-                backTestIcon.getIconHeight() * 2,
+    private void initializePokemonLabels() {
+        backTestLabel = createScaledPokemonLabel("UIAssets/back-test.gif");
+        frontTestLabel = createScaledPokemonLabel("UIAssets/front-test.gif");
+    }
+
+    private JLabel createScaledPokemonLabel(String imagePath) {
+        ImageIcon pokemonIcon = new ImageIcon(imagePath);
+        JLabel pokemonLabel = new JLabel(new ImageIcon(pokemonIcon.getImage().getScaledInstance(
+                pokemonIcon.getIconWidth() * 2,
+                pokemonIcon.getIconHeight() * 2,
                 Image.SCALE_DEFAULT)));
+        return pokemonLabel;
+    }
 
-        ImageIcon frontTestIcon = new ImageIcon("UIAssets/front-test.gif");
-        frontTestLabel = new JLabel(new ImageIcon(frontTestIcon.getImage().getScaledInstance(
-                frontTestIcon.getIconWidth() * 2,
-                frontTestIcon.getIconHeight() * 2,
-                Image.SCALE_DEFAULT)));
+    public void initilizeAllButtons() {
 
-        // Adjust the button size for a better fit
-        // Adjust the button size for a better fit
-        Dimension buttonSize = new Dimension(170, 100); // Increased width to 170
+        swapButton = createFixedSizeButtonWithHover("swap_button", "swap_button_hover", new Dimension(170, 100));
+        swapButton.addActionListener(this::swapButtonClicked);
 
+        blankButton = createFixedSizeButtonWithHover("blank_button", "blank_button_hover", new Dimension(170, 100));
+        blankButton.addActionListener(this::blankButtonClicked);
+
+
+        attackButton = createFixedSizeButtonWithHover("attack_button", "attack_button_hover", new Dimension(170, 100));
+        attackButton.addActionListener(this::attackButtonClicked);
+
+        heavyAttackButton = createFixedSizeButtonWithHover("heavy_attack_button", "heavy_attack_button_hover", new Dimension(170, 100));
+        heavyAttackButton.addActionListener(this::heavyAttackButtonClicked);
+
+        lightAttackButton = createFixedSizeButtonWithHover("light_attack_button", "light_attack_button_hover", new Dimension(170, 100));
+        lightAttackButton.addActionListener(this::lightAttackButtonClicked);
+
+        trueAttackButton = createFixedSizeButtonWithHover("true_attack_button", "true_attack_button_hover", new Dimension(170, 100));
+        trueAttackButton.addActionListener(this::trueAttackButtonClicked);
+
+        defenseButton = createFixedSizeButtonWithHover("defense_button", "defense_button_hover", new Dimension(170, 100));
+        defenseButton.addActionListener(this::defenseButtonClicked);
+
+
+        heavyDefenseButton = createFixedSizeButtonWithHover("heavy_defense_button", "heavy_defense_button_hover", new Dimension(170, 100));
+        heavyDefenseButton.addActionListener(this::heavyDefenseButtonClicked);
+
+        lightDefenseButton = createFixedSizeButtonWithHover("light_defense_button", "light_defense_button_hover", new Dimension(170, 100));
+        lightDefenseButton.addActionListener(this::lightDefenseButtonClicked);
+
+
+        healButton = createFixedSizeButtonWithHover("heal_button", "heal_button_hover", new Dimension(170, 100));
+        healButton.addActionListener(this::healButtonClicked);
+
+
+        lightHealButton = createFixedSizeButtonWithHover("light_heal_button", "light_heal_button_hover", new Dimension(170, 100));
+        lightHealButton.addActionListener(this::lightHealButtonClicked);
+
+        heavyHealButton = createFixedSizeButtonWithHover("heavy_heal_button", "heavy_heal_button_hover", new Dimension(170, 100));
+        heavyHealButton.addActionListener(this::heavyHealButtonClicked);
+
+
+        zero = createFixedSizeButtonWithHover("0", "0_hover", new Dimension(170, 100));
+        zero.addActionListener(this::zeroButtonClicked);
+
+        one = createFixedSizeButtonWithHover("1", "1_hover", new Dimension(170, 100));
+        one.addActionListener(this::oneButtonClicked);
+
+        two = createFixedSizeButtonWithHover("2", "2_hover", new Dimension(170, 100));
+        two.addActionListener(this::twoButtonClicked);
+
+        three = createFixedSizeButtonWithHover("3", "3_hover", new Dimension(170, 100));
+        three.addActionListener(this::threeButtonClicked);
+
+        four = createFixedSizeButtonWithHover("4", "4_hover", new Dimension(170, 100));
+        four.addActionListener(this::fourButtonClicked);
+
+        five = createFixedSizeButtonWithHover("5", "5_hover", new Dimension(170, 100));
+        five.addActionListener(this::fiveButtonClicked);
+
+    }
+
+    public void inintilizeHealthBars() {
+        // Initialize the health bars
+        playerHealthBar = new JProgressBar(0, 100);
+        playerHealthBar.setValue(100); // Starting health
+        playerHealthBar.setStringPainted(true); // Show health percentage
+        playerHealthBar.setForeground(Color.GREEN); // Health color
+
+        enemyHealthBar = new JProgressBar(0, 100);
+        enemyHealthBar.setValue(100); // Starting health
+        enemyHealthBar.setStringPainted(true); // Show health percentage
+        enemyHealthBar.setForeground(Color.GREEN); // Health color
+
+        // Assuming the backTestLabel and frontTestLabel are the Pokémon sprites:
+        backTestLabel.setLayout(new BorderLayout());
+        backTestLabel.add(playerHealthBar, BorderLayout.NORTH);
+        frontTestLabel.setLayout(new BorderLayout());
+        frontTestLabel.add(enemyHealthBar, BorderLayout.NORTH);
+    }
+
+    public void initilizeMenuView() {
+        // Initialize and configure the bottomMenuPanel
         bottomMenuPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         bottomMenuPanel.setOpaque(false);
-        // Add buttons with adjusted size
-        bottomMenuPanel.add(createFixedSizeButtonWithHover("attack_button", "attack_button_hover", buttonSize));
-        bottomMenuPanel.add(createFixedSizeButtonWithHover("heal_button", "heal_button_hover", buttonSize));
-        bottomMenuPanel.add(createFixedSizeButtonWithHover("defense_button", "defense_button_hover", buttonSize));
-        bottomMenuPanel.add(createFixedSizeButtonWithHover("swap_button", "swap_button_hover", buttonSize));
 
-        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Add buttons with adjusted size
+        bottomMenuPanel.add(attackButton);
+        bottomMenuPanel.add(healButton);
+        bottomMenuPanel.add(defenseButton);
+        bottomMenuPanel.add(swapButton);
+    };
+
+    public void initializeFrameLayout() {
+
         gbc.insets = new Insets(4, 4, 4, 4);
         gbc.fill = GridBagConstraints.BOTH;
 
@@ -140,9 +267,10 @@ public class BattleView {
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         gbc.fill = GridBagConstraints.HORIZONTAL; // Fill horizontally within its cell
         frame.add(bottomMenuPanel, gbc);
+    }
 
-
-// Initialize the console text area
+    public void initializeConsoleTextArea() {
+        // Initialize the console text area
         consoleTextArea = new JTextArea();
         consoleTextArea.setEditable(false);
         consoleTextArea.setBackground(new Color(188,162,126)); // Brown color for the box
@@ -160,12 +288,25 @@ public class BattleView {
         gbc.weightx = 1; // Give it all the remaining horizontal space
         gbc.fill = GridBagConstraints.BOTH; // Fill both horizontally and vertically
         frame.add(consoleScrollPane, gbc);
+    }
 
-
-
-        // Pack the frame and make it visible
+    public void packAndShowFrame () {
         frame.pack();
         frame.setVisible(true);
+        updateHealthBarPositions();
+    }
+
+    public BattleView() {
+        initializeFrame();
+        initializeTimer();
+        initializeBackgroundPanel();
+        initializePokemonLabels();
+        initilizeAllButtons();
+        inintilizeHealthBars();
+        initilizeMenuView();
+        initializeFrameLayout();
+        initializeConsoleTextArea();
+        packAndShowFrame();
     }
 
     public void appendToConsoleWithTypingAnimation(String message) {
@@ -190,22 +331,182 @@ public class BattleView {
         button.setMinimumSize(size);
         button.setMaximumSize(size);
 
-        // Scale the button icons to fit the button size
         Image img = icon.getImage().getScaledInstance(size.width, size.height, Image.SCALE_SMOOTH);
         Image hoverImg = hoverIcon.getImage().getScaledInstance(size.width, size.height, Image.SCALE_SMOOTH);
         button.setIcon(new ImageIcon(img));
         button.setRolloverIcon(new ImageIcon(hoverImg));
 
-        // Add an action listener to the button
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, imageName + " button clicked!");
-            }
-        });
+        // Determine the button action based on the image name
+        if (imageName.equals("attack_button")) {
+            button.addActionListener(this::attackButtonClicked);
+        } else if (imageName.equals("heal_button")) {
+            button.addActionListener(this::healButtonClicked);
+        } else if (imageName.equals("defense_button")) {
+            button.addActionListener(this::defenseButtonClicked);
+        } else if (imageName.equals("swap_button")) {
+            button.addActionListener(this::swapButtonClicked);
+        }
 
         return button;
     }
+
+    private void attackButtonClicked(ActionEvent e) {
+        // Clear the panel and add new buttons
+        bottomMenuPanel.removeAll();
+
+        bottomMenuPanel.add(heavyAttackButton);
+        bottomMenuPanel.add(lightAttackButton);
+        bottomMenuPanel.add(trueAttackButton);
+        bottomMenuPanel.add(blankButton);
+
+        bottomMenuPanel.revalidate();
+        bottomMenuPanel.repaint();
+    }
+
+
+
+    private void heavyAttackButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Heavy Attack Selected!");
+        // Additional logic for Heavy Attack can be added here
+    }
+
+    private void swapButtonClicked(ActionEvent e) {
+        bottomMenuPanel.removeAll();
+
+        bottomMenuPanel.add(zero);
+        bottomMenuPanel.add(one);
+        bottomMenuPanel.add(two);
+        bottomMenuPanel.add(three);
+        bottomMenuPanel.add(four);
+        bottomMenuPanel.add(five);
+
+
+        bottomMenuPanel.revalidate();
+        bottomMenuPanel.repaint();
+    }
+
+    private void blankButtonClicked(ActionEvent e) {
+        bottomMenuPanel.removeAll();
+
+        JOptionPane.showMessageDialog(frame, "Blank");
+
+//        bottomMenuPanel.add(attackButton);
+//        bottomMenuPanel.add(defenseButton);
+//        bottomMenuPanel.add(healButton);
+//        bottomMenuPanel.add(swapButton);
+//
+//        bottomMenuPanel.revalidate();
+//        bottomMenuPanel.repaint();
+    }
+
+
+    private void lightAttackButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Light Attack Selected!");
+    }
+
+    private void trueAttackButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "True Attack Selected!");
+    }
+
+
+    private void zeroButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 0");
+    }
+
+
+    private void oneButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 1");
+    }
+
+    private void twoButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 2");
+    }
+
+    private void threeButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 3");
+    }
+
+    private void fourButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 4");
+    }
+
+    private void fiveButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 5");
+    }
+
+
+
+    private void defenseButtonClicked(ActionEvent e) {
+        bottomMenuPanel.removeAll();
+
+        bottomMenuPanel.add(heavyDefenseButton);
+        bottomMenuPanel.add(lightDefenseButton);
+        bottomMenuPanel.add(blankButton);
+
+
+        bottomMenuPanel.revalidate();
+        bottomMenuPanel.repaint();
+    }
+
+    private void heavyDefenseButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Heavy Defense button clicked!");
+        // Implement defense logic here
+    }
+
+    private void lightDefenseButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Light Defense button clicked!");
+        // Implement defense logic here
+    }
+
+
+    private void healButtonClicked(ActionEvent e) {
+        bottomMenuPanel.removeAll();
+
+        bottomMenuPanel.add(heavyHealButton);
+        bottomMenuPanel.add(lightHealButton);
+        bottomMenuPanel.add(blankButton);
+
+
+        bottomMenuPanel.revalidate();
+        bottomMenuPanel.repaint();
+    }
+
+
+    private void lightHealButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Light Heal button clicked!");
+        // Implement heal logic here
+    }
+
+    private void heavyHealButtonClicked(ActionEvent e) {
+        JOptionPane.showMessageDialog(frame, "Heavy Heal button clicked!");
+        // Implement heal logic here
+    }
+
+    // Method to update the player's health bar
+    public void updatePlayerHealth(int health) {
+        playerHealthBar.setValue(health);
+    }
+
+    // Method to update the enemy's health bar
+    public void updateEnemyHealth(int health) {
+        enemyHealthBar.setValue(health);
+    }
+
+
+    public void updateHealthBarPositions() {
+        // The offset will be used to place the health bar slightly above the sprite.
+        int offset = 20; // You may need to adjust this value
+
+        // Get the bounds of the Pokémon labels.
+        Rectangle backLabelBounds = backTestLabel.getBounds();
+        Rectangle frontLabelBounds = frontTestLabel.getBounds();
+
+        // Set the health bar bounds. Adjust the y position by subtracting the offset and the height of the health bar.
+        playerHealthBar.setBounds(backLabelBounds.x, backLabelBounds.y - playerHealthBar.getPreferredSize().height - offset, backLabelBounds.width, playerHealthBar.getPreferredSize().height);
+        enemyHealthBar.setBounds(frontLabelBounds.x, frontLabelBounds.y - enemyHealthBar.getPreferredSize().height - offset, frontLabelBounds.width, enemyHealthBar.getPreferredSize().height);
+    }
+
+
 
 
     private GridBagConstraints createGbc(int x, int y, int width) {
@@ -256,6 +557,7 @@ public class BattleView {
     // Static method to display the battle view
     public static void DisplayBattleView() {
         SwingUtilities.invokeLater(() -> new BattleView());
+
     }
 
 }
