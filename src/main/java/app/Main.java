@@ -29,8 +29,8 @@ public class Main {
         //InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
 
         // Create an instance of MenuView and display the Main Menu
-//        MenuView menuView = new MenuView();
-//        MenuView.displayMainView();
+        MenuView menuView = new MenuView();
+        MenuView.displayMainView();
 
 
         SwingUtilities.invokeLater(() -> {

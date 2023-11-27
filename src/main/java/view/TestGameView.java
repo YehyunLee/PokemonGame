@@ -1,4 +1,13 @@
 package view;
+
+import data_access.PokemonApiCallDataAccessObject;
+import data_access.PokemonApiCallInterface;
+import data_access.PokemonListFromSpritesDataAcessObject;
+import data_access.PokemonListFromSpritesInterface;
+import entity.PlayerorAiPokemons;
+import entity.Pokemon;
+import use_case.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -7,18 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import data_access.PokemonApiCallDataAccessObject;
-import data_access.PokemonApiCallInterface;
-import data_access.PokemonListFromSpritesDataAcessObject;
-import data_access.PokemonListFromSpritesInterface;
-import entity.PlayerorAiPokemons;
-import entity.Pokemon;
-import use_case.CreateAllPokemons;
-import use_case.MovesFactory;
-import use_case.PokemonFactoryFromData;
-import use_case.RunGame;
-
-public class GameView extends JPanel {
+public class TestGameView extends JPanel {
     private JFrame frame;
     private CreateAllPokemons allPokemons;
 
@@ -46,100 +44,12 @@ public class GameView extends JPanel {
 
         // Create an instance of PokemonFactoryFromData and inject the data access objects
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
-        String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
-        // frame.getContentPane().remove(loadingLabel);
+        PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
+        PlayerorAiPokemons aiPlayer = CreatePlayersTest.MakeTestPlayerAi(factory);
 
-        // Create the game state
-        allPokemons = new CreateAllPokemons(factory, allPokemonNames);
-        Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
+        new RunGame(player, aiPlayer);
 
-        displayPokemonSelection(allPokemonsObjects);
-    }
-
-    private void displayPokemonSelection(Pokemon[] allPokemons) {
-        JPanel mainPanel = new JPanel(new BorderLayout());
-
-        // Left Panel with a scroll bar for all Pokemon
-        JPanel leftPanel = new JPanel(new GridLayout(0, 2, 10, 10)); // 3 columns, gaps of 10 pixels
-        JScrollPane leftScrollPane = new JScrollPane(leftPanel);
-        leftScrollPane.setPreferredSize(new Dimension(frame.getWidth() / 3, frame.getHeight()));
-
-        // Left Label
-        JLabel leftLabel = createLabel("Please select 6 Pokemon!");
-        JPanel leftLabelPanel = new JPanel(new BorderLayout());
-        leftLabelPanel.add(leftLabel, BorderLayout.NORTH);
-        leftLabelPanel.add(leftScrollPane, BorderLayout.CENTER);
-        mainPanel.add(leftLabelPanel, BorderLayout.WEST);
-
-        // Right Panel for selected Pokemon
-        JPanel rightPanel = new JPanel(new GridLayout(0, 3, 5, 10)); // 3 columns, gaps of 10 pixels
-        JScrollPane rightScrollPane = new JScrollPane(rightPanel);
-        rightScrollPane.setPreferredSize(new Dimension(frame.getWidth() / 2, frame.getHeight()));
-
-        // Right Label
-        JLabel rightLabel = createLabel("Chosen Pokemon");
-        JPanel rightLabelPanel = new JPanel(new BorderLayout());
-        rightLabelPanel.add(rightLabel, BorderLayout.NORTH);
-        rightLabelPanel.add(rightScrollPane, BorderLayout.CENTER);
-        mainPanel.add(rightLabelPanel, BorderLayout.EAST);
-
-        // Track selected Pokemon to avoid duplicates
-        List<Pokemon> selectedPokemonList = new ArrayList<>();
-
-        // Add all Pokemon to the left panel
-        for (Pokemon pokemon : allPokemons) {
-            JPanel pokemonPanel = createPokemonPanel(pokemon, rightPanel, selectedPokemonList);
-            leftPanel.add(pokemonPanel);
-        }
-
-        // Button to proceed if exactly 6 Pokemon are selected
-        JButton proceedButton = new JButton("Proceed");
-        proceedButton.addActionListener(e -> {
-            if (selectedPokemonList.size() == 6) {
-                // Proceed with the selected Pokemon
-                // You can use selectedPokemonList for the next view
-                // For example, startBattle(selectedPokemonList);
-                System.out.println("Proceeding with selected Pokemon!");
-
-                // convert listPokemon to Pokemon[]
-                Pokemon[] selectedPokemonListArray = new Pokemon[6];
-                for (int i = 0; i < 6; i++) {
-                    selectedPokemonListArray[i] = selectedPokemonList.get(i);
-                }
-
-                // Randomly choose 6 from allPokemonsObjects
-                Pokemon[] aiPokemon = new Pokemon[6];
-                for (int i = 0; i < 6; i++) {
-                    Pokemon saveRandomPoke = allPokemons[(int) (Math.random() * allPokemons.length)];
-                    if (!selectedPokemonList.contains(saveRandomPoke)) {
-                        aiPokemon[i] = saveRandomPoke;
-                    } else {
-                        i--;
-                    }
-                }
-
-                PlayerorAiPokemons player = new PlayerorAiPokemons(selectedPokemonListArray, "Player", 0);
-                // Random index for first Pokemon
-                PlayerorAiPokemons aiPlayer = new PlayerorAiPokemons(aiPokemon, "AI Player", (int) (Math.random() * 6));
-
-                List<String> playerMoves = MovesFactory.createMoves(List.of(player.pokemons));
-                List<String> aiMoves = MovesFactory.createMoves(List.of(aiPlayer.pokemons));
-
-                for (int i = 0; i < playerMoves.size(); i++) {
-                    player.pokemons[i].setMoves(playerMoves.get(i));
-                    aiPlayer.pokemons[i].setMoves(aiMoves.get(i));
-                }
-                new RunGame(player, aiPlayer);
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select exactly 6 Pokemon.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        mainPanel.add(proceedButton, BorderLayout.SOUTH);
-
-        frame.add(mainPanel);
-        frame.getContentPane().revalidate();
-        frame.getContentPane().repaint();
     }
 
     private JPanel createPokemonPanel(Pokemon pokemon, JPanel rightPanel, List<Pokemon> selectedPokemonList) {

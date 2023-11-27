@@ -44,6 +44,8 @@ public class MenuView {
             public void actionPerformed(ActionEvent e) {
                 // Add your code here to start the test game
                 JOptionPane.showMessageDialog(frame, "Starting the Test Game!");
+                TestGameView testGameView = new TestGameView();
+                testGameView.startGame(frame);
             }
         });
 
