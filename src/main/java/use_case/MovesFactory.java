@@ -14,7 +14,7 @@ public class MovesFactory {
             String pokemonName = pokemon.getName();
             int attackStat = pokemon.getAttack();
             int defenseStat = pokemon.getDefense();
-            int healthStat = pokemon.getHealth();
+            double healthStat = pokemon.getHealth();
 
             StringBuilder moveDetails = new StringBuilder();
             moveDetails.append(pokemonName).append(": ");
@@ -24,8 +24,8 @@ public class MovesFactory {
             moveDetails.append(", Heavy Attack: ").append(createHeavyAttack(pokemonName, attackStat).getHeavyAttack());
             moveDetails.append(", True Attack: ").append(createTrueAttack(pokemonName, attackStat).getTrueAttack()).append("], ");
 
-            moveDetails.append("Heal[Light Heal: ").append(createLightHeal(pokemonName, healthStat).getLightHeal());
-            moveDetails.append(", Heavy Heal: ").append(createHeavyHeal(pokemonName, healthStat).getHeavyheal()).append("], ");
+            moveDetails.append("Heal[Light Heal: ").append(createLightHeal(pokemonName, (int) healthStat).getLightHeal());
+            moveDetails.append(", Heavy Heal: ").append(createHeavyHeal(pokemonName, (int) healthStat).getHeavyheal()).append("], ");
             moveDetails.append("SpecialMove[").append(createSpecialMove(pokemonName).getName()).append("], ");
             moveDetails.append("Defense[Light Defense: ").append(createLightDefense(pokemonName, defenseStat).getLightDefense());
             moveDetails.append(", Heavy Defense: ").append(createHeavyDefense(pokemonName, defenseStat).getHeavyDefense()).append("] ");

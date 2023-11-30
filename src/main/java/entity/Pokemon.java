@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 public class Pokemon {
     String name = "";
     Integer health = 0;
+
+    Integer totalHealth = 0;
     Integer attack = 0;
     Integer defense = 0;
     String moves = Arrays.toString(new Moves[0]);
@@ -22,12 +24,13 @@ public class Pokemon {
     Integer speed = 0;
 
 
+
+
     // All methods to get Instance Attributes
     public String getName() {
         return name;
     }
 
-    public Integer getSpeed() {return speed;}
     public Integer getHealth() {
         return health;
     }
@@ -80,6 +83,10 @@ public class Pokemon {
 
     public Boolean getIsAlive() {return isAlive; }
 
+    public Integer getTotalHealth() {
+        return totalHealth;
+    }
+
 
     // All methods to set Instance Attributes
     public void setName(String name) {
@@ -88,6 +95,11 @@ public class Pokemon {
     public void setHealth(Integer health) {
         this.health = health;
     }
+
+    public void setTotalHealth(Integer totalHealth) {
+        this.totalHealth = totalHealth;
+    }
+
     public void setAttack(Integer attack) {
         this.attack = attack;
     }
@@ -107,8 +119,6 @@ public class Pokemon {
     public void setNumber(int number) {
         this.number = number;
     }
-
-
 
 
     public void takeDammage (Double dammage) {
@@ -140,7 +150,6 @@ public class Pokemon {
         System.out.println("BackSprite: " + this.getBackSprite());
         System.out.println("IsAlive: " + this.getIsAlive());
     }
-
 
 
 

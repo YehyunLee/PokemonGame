@@ -1,295 +1,236 @@
 package use_case;
-
+import view.BattleViewInterface;
+import view.LoserInterface;
+import view.WinnerInterface;
 import entity.PlayerorAiPokemons;
 import entity.GameState;
 import entity.Pokemon;
-
-import java.util.Scanner;
 import java.util.Random;
 
-public class RunGame {
+/**
+ * This class represents the game logic to run a Pokémon battle.
+ */
+public class RunGame implements RunGameOutput {
     private static GameState gameState;
-    private final Scanner scanner = new Scanner(System.in);
+    private static BattleViewInterface battleView;
 
-    public RunGame(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
-        gameState = new GameState(); // Initialize gameState in the constructor
+    /**
+     * Constructs a RunGame instance initializing the game state and battle view.
+     *
+     * @param player   The player's Pokémon.
+     * @param aiPlayer The AI player's Pokémon.
+     */
+    public RunGame(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer, BattleViewInterface battleView) {
+        gameState = new GameState();
         gameState.initializeGameState(player, aiPlayer);
+        RunGame.battleView = battleView;
+        RunGame.battleView.setGameOutput(this);
 
-
-        System.out.println("Prepare for Pokemon Battle!");
-        System.out.println("Player: " + gameState.player.getActivePokemon().getName() + " I choose you!");
-        System.out.println("PlayerAi: " + gameState.aiPlayer.getActivePokemon().getName() + " I choose you!");
-
-
-        while (!gameState.GameOver) {
-            if (gameState.isPlayerTurn) {
-                playMove(gameState.player, gameState.aiPlayer);
-            } else {
-                playRandomMove(gameState.player, gameState.aiPlayer);
-            }
-        }
+        battleView.updateFrontGif(player.getActivePokemon().getBackSprite());
+        battleView.updateBackGif(aiPlayer.getActivePokemon().getFrontSprite());
+        battleView.displayBattleView();
+        battleView.printToConsole("Prepare for Pokemon Battle!");
+        battleView.printToConsole("Player: " + gameState.player.getActivePokemon().getName() + " I choose you!");
+        battleView.printToConsole("PlayerAi: " + gameState.aiPlayer.getActivePokemon().getName() + " I choose you!");
+        battleView.printToConsole("----------------------------------------------------------------------");
     }
 
+    /**
+     * Switches to a random Pokémon for the AI player.
+     *
+     * @param playerorAiPokemons The AI player's pokémons.
+     */
     public void SwitchRandomPokemon(PlayerorAiPokemons playerorAiPokemons) {
         Random random = new Random();
         int newIndex;
 
         do {
-            // Generate a random index for the Pokémon to switch to
             newIndex = random.nextInt(6);
-
             if (playerorAiPokemons.isAllDead()) {
                 gameState.GameOver = true;
                 System.out.println("All of PlayerAi's Pokemon are unable to battle, Player wins!");
                 return;
-            } else if
-            (newIndex != playerorAiPokemons.getCurrentPokemonIndex()) {
-                if (!playerorAiPokemons.isSwapPokemonAlive(newIndex)) {
-                    newIndex = -1; // Reset newIndex to generate another random index
-                }
-            } else {
-                newIndex = -1; // Reset newIndex to generate another random index
+            }
+
+            if (newIndex != playerorAiPokemons.getCurrentPokemonIndex() && !playerorAiPokemons.isSwapPokemonAlive(newIndex)) {
+                newIndex = -1;
             }
         } while (newIndex == -1);
 
-        // Change the currentPokemonIndex to the selected random index
         playerorAiPokemons.SwapActivePokemon(newIndex);
-        System.out.println("AiPlayer Switched to Pokémon " + playerorAiPokemons.getActivePokemon().getName());
+        battleView.printToConsole("AiPlayer Switched to Pokémon " + playerorAiPokemons.getActivePokemon().getName());
+        battleView.updateBackGif(gameState.aiPlayer.getActivePokemon().getFrontSprite());
+        updateBothHealthBars();
         printHealthStatus(gameState.player, gameState.aiPlayer);
     }
 
-
-    public static void SwitchPokemon(PlayerorAiPokemons playerorAiPokemons) {
-        Scanner scanner = new Scanner(System.in);
-
-        int newIndex;
+    /**
+     * Allows a player to switch Pokémon during the game.
+     *
+     * @param playerPokemons The player's pokémons.
+     */
+    public static void SwitchPokemon(PlayerorAiPokemons playerPokemons) {
+        int newIndex = 0;
 
         do {
-            // Ask the user to enter the index of the Pokémon they want to switch to
-            System.out.println("Enter the index of the Pokémon you want to switch to:");
-            printAllPokemonStatuses(playerorAiPokemons);
+            battleView.printToConsole("Enter the index of the Pokémon you want to switch to:");
+            printAllPokemonStatuses(playerPokemons);
 
-
-            newIndex = scanner.nextInt();
-
-
-            if (playerorAiPokemons.isAllDead()) {
+            if (playerPokemons.isAllDead()) {
                 gameState.GameOver = true;
                 System.out.println("All of Player's Pokemon are unable to battle, PlayerAi wins!");
-            }
-            // Check if the selected Pokémon is alive and not the currently active Pokémon
-            else if (newIndex >= 0 && newIndex < 6 && newIndex != playerorAiPokemons.getCurrentPokemonIndex()) {
-                if (!playerorAiPokemons.isSwapPokemonAlive(newIndex)) {
-                    System.out.println("Selected Pokémon is unable to battle.");
-                    newIndex = -1; // Reset newIndex to ask again
-                }
-            } else if (newIndex == playerorAiPokemons.getCurrentPokemonIndex()) {
-                System.out.println("You cannot switch to the currently active Pokémon.");
-                newIndex = -1; // Reset newIndex to ask again
+            } else if (newIndex >= 0 && newIndex < 6 && newIndex != playerPokemons.getCurrentPokemonIndex() && !playerPokemons.isSwapPokemonAlive(newIndex)) {
+                battleView.printToConsole("Selected Pokémon is unable to battle.");
+                newIndex = -1;
+            } else if (newIndex == playerPokemons.getCurrentPokemonIndex()) {
+                battleView.printToConsole("You cannot switch to the currently active Pokémon.");
+                newIndex = -1;
             } else {
-                System.out.println("Invalid Pokémon index.");
-                newIndex = -1; // Reset newIndex to ask again
+                battleView.printToConsole("Invalid Pokémon index.");
+                newIndex = -1;
             }
         } while (newIndex == -1);
 
-        // Change the currentPokemonIndex to the selected index
-        playerorAiPokemons.SwapActivePokemon(newIndex);
-        System.out.println("Switched to Pokémon " + playerorAiPokemons.getActivePokemon().getName());
+        playerPokemons.SwapActivePokemon(newIndex);
+        updateBothHealthBars();
+        battleView.printToConsole("Switched to Pokémon " + playerPokemons.getActivePokemon().getName());
     }
 
-
-    public void playMove(PlayerorAiPokemons player, PlayerorAiPokemons opponent) {
-        boolean continueMove = true; // Flag to control the loop
-
-        while (continueMove) {
-            System.out.println("Player's " +
-                    player.getActivePokemon().getName() + " is making the move:");
-            System.out.println("Choose Move to make:");
-            System.out.println("1: Attack");
-            System.out.println("2: Heal");
-            System.out.println("3: Defense");
-            System.out.println("4: Swap Pokemon");
-            System.out.println("Enter Any other number to view Pokemon Statuses");
-
-            int moveType = scanner.nextInt();
-
-            switch (moveType) {
-                case 1:
-                    System.out.println("Choose Attack type:");
-                    System.out.println("1: Light Attack");
-                    System.out.println("2: Heavy Attack");
-                    System.out.println("3: True Attack");
-                    int attackType = scanner.nextInt();
-
-                    switch (attackType) {
-                        case 1:
-                            System.out.println("Player:");
-                            useAttack(player, opponent, "Light Attack");
-                            continueMove = false; // End the move after using attack
-                            break;
-                        case 2:
-                            System.out.println("Player:");
-                            useAttack(player, opponent, "Heavy Attack");;
-                            continueMove = false; // End the move after using attack
-                            break;
-                        case 3:
-                            System.out.println("Player:");
-                            useAttack(player, opponent, "True Attack");
-                            continueMove = false; // End the move after using attack
-                            break;
-                        default:
-                            System.out.println("Invalid Attack type. Please try again.");
-                            break;
-                    }
-                    break;
-
-                case 2:
-                    System.out.println("Choose Heal type:");
-                    System.out.println("1: Light Heal");
-                    System.out.println("2: Heavy Heal");
-                    int healType = scanner.nextInt();
-
-                    switch (healType) {
-                        case 1:
-                            System.out.println("Player:");
-                            useHeal(player, "Light Heal");
-                            continueMove = false; // End the move after using heal
-                            break;
-                        case 2:
-                            System.out.println("Player:");
-                            useHeal(player, "Heavy Heal");
-                            continueMove = false; // End the move after using heal
-                            break;
-                        default:
-                            System.out.println("Invalid Heal type. Please try again.");
-                            break;
-                    }
-                    break;
-
-                case 3:
-                    System.out.println("Choose Defense type:");
-                    System.out.println("1: Light Defense");
-                    System.out.println("2: Heavy Defense");
-                    int defenseType = scanner.nextInt();
-
-                    switch (defenseType) {
-                        case 1:
-                            System.out.println("Player:");
-                            useDefense(player, "Light Defense");
-                            continueMove = false; // End the move after using defense
-                            break;
-                        case 2:
-                            System.out.println("Player:");
-                            useDefense(player, "Heavy Defense");
-                            continueMove = false; // End the move after using defense
-                            break;
-                        default:
-                            System.out.println("Invalid Defense type. Please try again.");
-                            break;
-                    }
-                    break;
-
-                case 4:
-                    System.out.println("Player:");
-                    SwitchPokemon(player);
-                    return;
-
-                default:
-                    System.out.println("----------------------------------------------------------------------");
-                    System.out.println("PLAYER STATS:");
-                    printAllPokemonStatuses(gameState.player);
-                    System.out.println("RANDOM AI STATS:");
-                    printAllPokemonStatuses(gameState.aiPlayer);
-                    System.out.println("----------------------------------------------------------------------");
-                    break;
-            }
+    /**
+     * Switches the player's current Pokémon based on the provided move index.
+     *
+     * @param move The index of the Pokémon to switch to.
+     */
+    public void SwitchPlayerPokemon(String move) {
+        printBothStatuses();
+        if (gameState.player.isAllDead()) {
+            gameState.GameOver = true;
+            System.out.println("All of Player's Pokemon are unable to battle, Ai Player wins!");
+        } else if (Integer.parseInt(move) == gameState.player.getCurrentPokemonIndex()) { // If Index is the same
+            battleView.printToConsole("Move Failed!");
+        } else {
+            gameState.player.SwapActivePokemon(Integer.parseInt(move));
+            battleView.updateFrontGif(gameState.player.getActivePokemon().getBackSprite());
+            battleView.printToConsole("Player Switched to Pokémon " + gameState.player.getActivePokemon().getName());
+            printHealthStatus(gameState.player, gameState.aiPlayer);
         }
-        gameState.reverseIsPlayerTurn();
     }
 
+    /**
+     * Triggers an attack action against the opponent Pokémon.
+     *
+     * @param move The type of attack move to be used.
+     */
+    public void useAttackOnOpponent(String move) {
+        useAttack(gameState.player, gameState.aiPlayer, move);
+    }
 
+    /**
+     * Executes a healing action on the player's current Pokémon.
+     *
+     * @param move The type of healing move to be used.
+     */
+    public void useHealOnSelf(String move) {
+        useHeal(gameState.player, move);
+        updatePlayerHealthBar();
+    }
 
+    /**
+     * Executes a defense action for the player's current Pokémon.
+     *
+     * @param move The type of defense move to be used.
+     */
+    public void useDefense(String move) {
+        useDefense(gameState.player, move);
+    }
 
-    public void playRandomMove(PlayerorAiPokemons player, PlayerorAiPokemons opponent) {
+    /**
+     * Executes a random move for the AI player, which could be an attack, heal, or defense.
+     */
+    public void playRandomMove() {
         Random random = new Random();
-        double result = 0.0;
-
-        int moveType = random.nextInt(4) + 1; // Randomly select move type (1: Attack, 2: Heal, 3: Defense, 4: Swap Pokemon)
+        int moveType = random.nextInt(3); // 0: Attack, 1: Heal, 2: Defense
 
         switch (moveType) {
-            case 1: // Attack
-                int attackType = random.nextInt(3) + 1; // Randomly select attack type
-
-                switch (attackType) {
-                    case 1:
-                        System.out.println("AiPlayer:");
-                        result = useAttack(opponent, player, "Light Attack");
-                        break;
-                    case 2:
-                        System.out.println("AiPlayer:");
-                        result = useAttack(opponent, player, "Heavy Attack");
-                        break;
-                    case 3:
-                        System.out.println("AiPlayer:");
-                        result = useAttack(opponent, player, "True Attack");
-                        break;
-                }
+            case 0: // Attack
+                String[] attackTypes = {"Light Attack", "Heavy Attack", "True Attack"};
+                String selectedAttack = attackTypes[random.nextInt(attackTypes.length)];
+                battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedAttack + "!");
+                useAttack(gameState.aiPlayer, gameState.player, selectedAttack);
                 break;
 
-            case 2: // Heal
-                int healType = random.nextInt(2) + 1; // Randomly select heal type
-
-                switch (healType) {
-                    case 1:
-                        System.out.println("AiPlayer:");
-                        result = useHeal(opponent, "Light Heal");
-                        break;
-                    case 2:
-                        System.out.println("AiPlayer:");
-                        result = useHeal(opponent, "Heavy Heal");
-                        break;
-                }
+            case 1: // Heal
+                String[] healTypes = {"Light Heal", "Heavy Heal"};
+                String selectedHeal = healTypes[random.nextInt(healTypes.length)];
+                battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedHeal + "!");
+                useHeal(gameState.aiPlayer, selectedHeal);
                 break;
 
-            case 3: // Defense
-                int defenseType = random.nextInt(2) + 1; // Randomly select defense type
-
-                switch (defenseType) {
-
-                    case 1:
-                        System.out.println("AiPlayer:");
-                        useDefense(opponent, "Light Defense");
-                        break;
-                    case 2:
-                        System.out.println("AiPlayer:");
-                        useDefense(opponent, "Heavy Defense");
-                        break;
-                }
+            case 2: // Defense
+                String[] defenseTypes = {"Light Defense", "Heavy Defense"};
+                String selectedDefense = defenseTypes[random.nextInt(defenseTypes.length)];
+                battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedDefense + "!");
+                useDefense(gameState.aiPlayer, selectedDefense);
                 break;
         }
         gameState.reverseIsPlayerTurn();
     }
 
+    /**
+     * Retrieves the power of a specific move based on its category and name.
+     *
+     * @param moveCategory The category of the move (e.g., Attack, Heal, Defense).
+     * @param moveName     The name of the move.
+     * @return The power of the move.
+     */
     private double getMovePower(String moveCategory, String moveName) {
         return gameState.player.getActivePokemon().getMoves().get(moveCategory).get(moveName);
     }
 
+    /**
+     * Updates the health bar of the enemy Pokémon in the battle view.
+     */
+    public static void updateEnemyHealthBar() {
+        double hp = gameState.aiPlayer.getActivePokemon().getHealth();
+        double totalHp = gameState.aiPlayer.getActivePokemon().getTotalHealth();
+        battleView.updateEnemyHealth((int) ((hp / totalHp) * 100));
+    }
+
+    /**
+     * Updates the health bar of the player's Pokémon in the battle view.
+     */
+    public static void updatePlayerHealthBar() {
+        double playerHp = gameState.player.getActivePokemon().getHealth();
+        double totalPlayerHp = gameState.player.getActivePokemon().getTotalHealth();
+        battleView.updatePlayerHealth((int) ((playerHp / totalPlayerHp) * 100));
+    }
+
+    /**
+     * Updates both the player's and enemy's health bars in the battle view.
+     */
+    public static void updateBothHealthBars() {
+        updateEnemyHealthBar();
+        updatePlayerHealthBar();
+    }
+
+    /**
+     * Executes an attack from one Pokémon against another.
+     *
+     * @param player     The attacking Pokémon.
+     * @param opponent   The defending Pokémon.
+     * @param attackType The type of attack to be used.
+     * @return The result of the attack action.
+     */
     private double useAttack(PlayerorAiPokemons player, PlayerorAiPokemons opponent, String attackType) {
         double result = getMovePower("Attack", attackType);
-        System.out.println(player.getActivePokemon().getName() + " Used " + attackType + "!");
-        System.out.println(opponent.getActivePokemon().getName() + " Took " + result + " Damage");
+        battleView.printToConsole(player.getActivePokemon().getName() + " Used " + attackType + "!");
+        battleView.printToConsole(opponent.getActivePokemon().getName() + " Took " + result + " Damage");
 
         opponent.getActivePokemon().takeDammage(result);
+        updateBothHealthBars();
 
         if (opponent.getActivePokemon().getHealth() <= 0) {
-            System.out.println(opponent.getActivePokemon().getName() + " Fainted!");
-            opponent.getActivePokemon().die();
-            opponent.getActivePokemon().setHealth(0);
-            if (player.getType().equals("AI Player") ) {
-                SwitchPokemon(opponent);
-            } else {
-                SwitchRandomPokemon(opponent);
-            }
+            handleOpponentFainting(opponent);
             return result;
         }
 
@@ -297,41 +238,85 @@ public class RunGame {
         return result;
     }
 
+    /**
+     * Handles the scenario when an opponent's Pokémon faints.
+     *
+     * @param opponent The opponent's Pokémon that has fainted.
+     */
+    private void handleOpponentFainting(PlayerorAiPokemons opponent) {
+        battleView.printToConsole(opponent.getActivePokemon().getName() + " Fainted!");
+        opponent.getActivePokemon().die();
+        opponent.getActivePokemon().setHealth(0);
+
+        if (gameState.player.getType().equals("AI Player")) {
+            SwitchPokemon(opponent);
+        } else {
+            SwitchRandomPokemon(opponent);
+        }
+    }
+
+    /**
+     * Executes a heal move for the player's Pokémon.
+     *
+     * @param player   The Pokémon that will be healed.
+     * @param healType The type of heal to be used.
+     * @return The result of the heal action.
+     */
     private double useHeal(PlayerorAiPokemons player, String healType) {
         double result = getMovePower("Heal", healType);
-        System.out.println(player.getActivePokemon().getName() + " Used " + healType + "!");
-        System.out.println("Healed " + player.getActivePokemon().getName() + " for " + result);
+        battleView.printToConsole(player.getActivePokemon().getName() + " Used " + healType + "!");
+        battleView.printToConsole("Healed " + player.getActivePokemon().getName() + " for " + (int) result);
+        updateBothHealthBars();
 
         player.getActivePokemon().doHealing(result);
-
         printHealthStatus(gameState.player, gameState.aiPlayer);
         return result;
     }
 
+    /**
+     * Executes a defense move for the player's Pokémon.
+     *
+     * @param player       The Pokémon that will use the defense move.
+     * @param defenseType  The type of defense to be used.
+     */
     private void useDefense(PlayerorAiPokemons player, String defenseType) {
         double result = getMovePower("Defense", defenseType);
-        System.out.println(player.getActivePokemon().getName() + " Used " + defenseType + "!");
+        battleView.printToConsole(player.getActivePokemon().getName() + " Used " + defenseType + "!");
         player.getActivePokemon().increaseDefence(result);
-        System.out.println("Increased " + player.getActivePokemon().getName() + "'s Defense by " + result);
+        battleView.printToConsole("Increased " + player.getActivePokemon().getName() + "'s Defense by " + result);
     }
 
-    private void printHealthStatus(PlayerorAiPokemons player, PlayerorAiPokemons opponent) {
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println( "Player's " +
-                player.getActivePokemon().getName() + "' HP: " + player.getActivePokemon().getHealth());
-        System.out.println(  "Random Ai's " +
-                opponent.getActivePokemon().getName() + "'s HP: " + opponent.getActivePokemon().getHealth());
-        System.out.println("----------------------------------------------------------------------");
+    /**
+     * Prints the current health status of both player's and opponent's Pokémon.
+     *
+     * @param player   The player's Pokémon.
+     * @param opponent The opponent's Pokémon.
+     */
+    private static void printHealthStatus(PlayerorAiPokemons player, PlayerorAiPokemons opponent) {
+        battleView.printToConsole("Player's " + player.getActivePokemon().getName() + "' HP: " + player.getActivePokemon().getHealth());
+        battleView.printToConsole("Random Ai's " + opponent.getActivePokemon().getName() + "'s HP: " + opponent.getActivePokemon().getHealth());
+        battleView.printToConsole("----------------------------------------------------------------------");
     }
 
-    private static void printAllPokemonStatuses(PlayerorAiPokemons playerorAi) {
-        for (int i = 0; i < playerorAi.pokemons.length; i++)  {
-            Pokemon pokemon = playerorAi.pokemons[i];
-            if (pokemon.getIsAlive()) {
-                System.out.println(i + ": " + pokemon.getName() + " | HP:" + pokemon.getHealth() + " | Status: " + "Alive");
-            } else {
-                System.out.println(i + ": " + pokemon.getName() + " | HP:0 | Status: " + "Fainted!");
-            }
+    /**
+     * Prints the statuses of all Pokémon in a player's team.
+     *
+     * @param playerOrAi The player or AI whose Pokémon statuses are to be printed.
+     */
+    private static void printAllPokemonStatuses(PlayerorAiPokemons playerOrAi) {
+        for (int i = 0; i < playerOrAi.pokemons.length; i++) {
+            Pokemon pokemon = playerOrAi.pokemons[i];
+            String status = pokemon.getIsAlive() ? "Alive" : "Fainted!";
+            battleView.printToConsole(i + ": " + pokemon.getName() + " | HP:" + pokemon.getHealth() + " | Status: " + status);
         }
     }
+
+    /**
+     * Prints the statuses of all Pokémon for both the player and the AI.
+     */
+    private static void printBothStatuses() {
+        printAllPokemonStatuses(gameState.player);
+        printAllPokemonStatuses(gameState.aiPlayer);
+    }
+
 }

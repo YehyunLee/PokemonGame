@@ -81,6 +81,7 @@ public class PokemonFactoryFromData implements PokemonFactoryFromDataInterface {
                 default:
                     break;
             }
+            pokemon.setTotalHealth(pokemon.getHealth());
         }
     }
 

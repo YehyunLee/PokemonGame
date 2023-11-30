@@ -43,11 +43,7 @@ public class PokemonListFromSpritesDataAcessObject implements PokemonListFromSpr
     }
 
     private String constructSpritesFolderPath(String subfolder) {
-        // Get the user directory
-        String userDirectory = System.getProperty("user.dir");
-
-        // Construct the full folder path
-        return userDirectory + File.separator + "src" + File.separator + "main" + File.separator + "java"
+        return "src" + File.separator + "main" + File.separator + "java"
                 + File.separator + "data_access" + File.separator + "sprites" + File.separator + "pokemon" +
                 File.separator + "showdown" + File.separator + subfolder;
     }
