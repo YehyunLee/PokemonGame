@@ -13,14 +13,14 @@ import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
-import use_case.CreateAllPokemons;
-import use_case.MovesFactory;
-import use_case.PokemonFactoryFromData;
-import use_case.RunGame;
+import use_case.*;
+import view.BattleView;
 
 public class GameView extends JPanel {
     private JFrame frame;
     private CreateAllPokemons allPokemons;
+
+    private RunGameOutput gameOutput;
 
     public void startGame(JFrame frame) {
         this.frame = frame;
@@ -130,7 +130,9 @@ public class GameView extends JPanel {
                     player.pokemons[i].setMoves(playerMoves.get(i));
                     aiPlayer.pokemons[i].setMoves(aiMoves.get(i));
                 }
-                new RunGame(player, aiPlayer);
+
+                BattleViewInterface battleView = new BattleView();
+                RunGame game = new RunGame(player, aiPlayer, battleView);
             } else {
                 JOptionPane.showMessageDialog(frame, "Please select exactly 6 Pokemon.", "Error", JOptionPane.ERROR_MESSAGE);
             }

@@ -1,9 +1,12 @@
 package use_case;
 
 import entity.PlayerorAiPokemons;
+import view.BattleViewInterface;
 
 
 public class InitializeTestGameState {
+
+    private final BattleViewInterface battleView;
 
     // Did not end up using these so we can delete - Tyseer
 
@@ -26,7 +29,8 @@ public class InitializeTestGameState {
 //        return turn;
 //    }
 
-    public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
+    public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames, BattleViewInterface battleView) {
+        this.battleView = battleView;
 
         // This is all the code to Initilize Gamestate with all the Pokemons, DONT DELETE!
 //        CreateAllPokemons allPokemons = new CreateAllPokemons(factory, allPokemonNames);
@@ -44,8 +48,7 @@ public class InitializeTestGameState {
 
         PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
         PlayerorAiPokemons playerAi = CreatePlayersTest.MakeTestPlayerAi(factory);
-
-        RunGame playGame = new RunGame(player, playerAi);
+        RunGame playGame = new RunGame(player, playerAi, battleView);
 
 
 

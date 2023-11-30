@@ -7,18 +7,20 @@ import data_access.PokemonListFromSpritesInterface;
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 import use_case.*;
+import use_case.RunGameOutput;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestGameView extends JPanel {
     private JFrame frame;
     private CreateAllPokemons allPokemons;
+
+    private RunGameOutput gameOutput;
 
     public void startGame(JFrame frame) {
         this.frame = frame;
@@ -48,8 +50,8 @@ public class TestGameView extends JPanel {
         PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
         PlayerorAiPokemons aiPlayer = CreatePlayersTest.MakeTestPlayerAi(factory);
 
-        new RunGame(player, aiPlayer);
-
+        BattleView battleView = new BattleView();
+        RunGame game = new RunGame(player, aiPlayer, battleView);
     }
 
     private JPanel createPokemonPanel(Pokemon pokemon, JPanel rightPanel, List<Pokemon> selectedPokemonList) {
