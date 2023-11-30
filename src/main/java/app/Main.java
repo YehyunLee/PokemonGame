@@ -27,11 +27,9 @@ public class Main {
         String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
 
 
-
-
         // Create the game state
-        InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
-        //InitializeTestGameState gameState = new InitializeTestGameState(factory, allPokemonNames);
+        //InitilizeGameState gameState = new InitilizeGameState(factory, allPokemonNames);
+        //InitializeTestGameState gState = new InitializeTestGameState(factory, allPokemonNames);
 
         // Create an instance of MenuView and display the Main Menu
 //        MenuView menuView = new MenuView();
