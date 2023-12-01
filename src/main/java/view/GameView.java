@@ -131,7 +131,7 @@ public class GameView extends JPanel {
                     aiPlayer.pokemons[i].setMoves(aiMoves.get(i));
                 }
 
-                BattleViewInterface battleView = new BattleView();
+                BattleViewInterface battleView = new BattleView(frame);
                 RunGame game = new RunGame(player, aiPlayer, battleView);
             } else {
                 JOptionPane.showMessageDialog(frame, "Please select exactly 6 Pokemon.", "Error", JOptionPane.ERROR_MESSAGE);

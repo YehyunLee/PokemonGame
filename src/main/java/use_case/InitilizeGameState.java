@@ -23,8 +23,8 @@ public class InitilizeGameState {
         PlayerorAiPokemons player = players[0];
         PlayerorAiPokemons aiPlayer = players[1];
 
-        BattleViewInterface battleView = new BattleView();
-        RunGame game = new RunGame(player, aiPlayer, battleView);
+//        BattleViewInterface battleView = new BattleView();
+//        RunGame game = new RunGame(player, aiPlayer, battleView);
     }
 
 }

@@ -61,8 +61,8 @@ public class BattleView implements BattleViewInterface {
     /**
      * Constructor
      */
-    public BattleView() {
-        initializeFrame();
+    public BattleView(JFrame frame) {
+        initializeFrame(frame);
         initializeTimer();
         initializeBackgroundPanel();
         initializePokemonLabels();
@@ -111,8 +111,9 @@ public class BattleView implements BattleViewInterface {
     /**
      * Initializes the main frame of the Battle View.
      */
-    private void initializeFrame() {
-        frame = new JFrame("Battle View");
+    private void initializeFrame(JFrame frame) {
+        this.frame = frame;
+        frame.setTitle("Battle View");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
