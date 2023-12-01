@@ -1,5 +1,8 @@
 package view;
 
+import data_access.PokemonApiCallInterface;
+import data_access.PokemonListFromSpritesInterface;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +12,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class MenuView {
+    private static PokemonApiCallInterface apiDataAccess;
+    private static PokemonListFromSpritesInterface spritesDataAccess;
+
+    public MenuView(PokemonApiCallInterface apiDataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
+        MenuView.apiDataAccess = apiDataAccess;
+        MenuView.spritesDataAccess = spritesDataAccess;
+    }
     public static void displayMainView() {
         // Create the main frame
         JFrame frame = new JFrame("Main Menu");
@@ -29,8 +39,9 @@ public class MenuView {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Loading the game, please wait a few seconds after clicking ok ....");
-                GameView gameView = new GameView();
+                // Add your code here to start the actual game
+//                JOptionPane.showMessageDialog(frame, "Starting the Game!");
+                GameView gameView = new GameView(apiDataAccess, spritesDataAccess);
                 gameView.startGame(frame);
             }
         });
@@ -42,9 +53,8 @@ public class MenuView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add your code here to start the test game
-                JOptionPane.showMessageDialog(frame, "WARNING: API Call may take a few seconds please wait after clicking ok ... " +
-                        "\n API limited to 50 calls per 10 minutes, so dont spam click this button!");
-                TestGameView testGameView = new TestGameView();
+                JOptionPane.showMessageDialog(frame, "Starting the Test Game!");
+                TestGameView testGameView = new TestGameView(apiDataAccess, spritesDataAccess);
                 testGameView.startGame(frame);
             }
         });
@@ -104,6 +114,4 @@ public class MenuView {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // [2] CODE for choosing Pokemons
 }

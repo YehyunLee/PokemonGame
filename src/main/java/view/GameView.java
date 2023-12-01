@@ -7,20 +7,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
-import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 import use_case.*;
-import view.BattleView;
 
 public class GameView extends JPanel {
     private JFrame frame;
     private CreateAllPokemons allPokemons;
 
     private RunGameOutput gameOutput;
+
+    private PokemonApiCallInterface apiDataAccess;
+    private PokemonListFromSpritesInterface spritesDataAccess;
+
+    // Constructor with dependency injection
+    public GameView(PokemonApiCallInterface apiDataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
+        this.apiDataAccess = apiDataAccess;
+        this.spritesDataAccess = spritesDataAccess;
+    }
 
     public void startGame(JFrame frame) {
         this.frame = frame;
@@ -40,9 +46,6 @@ public class GameView extends JPanel {
         // frame.add(backgroundPanel, BorderLayout.CENTER);
         // frame.add(loadingLabel, BorderLayout.NORTH);
 
-        //Initialize the API and sprite data access objects
-        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
-        PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 
         // Create an instance of PokemonFactoryFromData and inject the data access objects
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
@@ -97,11 +100,6 @@ public class GameView extends JPanel {
         JButton proceedButton = new JButton("Proceed");
         proceedButton.addActionListener(e -> {
             if (selectedPokemonList.size() == 6) {
-                // Proceed with the selected Pokemon
-                // You can use selectedPokemonList for the next view
-                // For example, startBattle(selectedPokemonList);
-                System.out.println("Proceeding with selected Pokemon!");
-
                 // convert listPokemon to Pokemon[]
                 Pokemon[] selectedPokemonListArray = new Pokemon[6];
                 for (int i = 0; i < 6; i++) {

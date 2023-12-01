@@ -26,7 +26,6 @@ public class MovesFactory {
 
             moveDetails.append("Heal[Light Heal: ").append(createLightHeal(pokemonName, (int) healthStat).getLightHeal());
             moveDetails.append(", Heavy Heal: ").append(createHeavyHeal(pokemonName, (int) healthStat).getHeavyheal()).append("], ");
-            moveDetails.append("SpecialMove[").append(createSpecialMove(pokemonName).getName()).append("], ");
             moveDetails.append("Defense[Light Defense: ").append(createLightDefense(pokemonName, defenseStat).getLightDefense());
             moveDetails.append(", Heavy Defense: ").append(createHeavyDefense(pokemonName, defenseStat).getHeavyDefense()).append("] ");
 
@@ -71,7 +70,5 @@ public class MovesFactory {
         return new Defense(pokemonName + "'s Defense Move", 0, defenseAmount);
     }
 
-    private static SpecialMoves createSpecialMove(String pokemonName) {
-        return new SpecialMoves(pokemonName + "'s Special move");
-    }
+
 }
