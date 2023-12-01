@@ -50,7 +50,7 @@ public class TestGameView extends JPanel {
         PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
         PlayerorAiPokemons aiPlayer = CreatePlayersTest.MakeTestPlayerAi(factory);
 
-        BattleView battleView = new BattleView();
+        BattleView battleView = new BattleView(frame);
         RunGame game = new RunGame(player, aiPlayer, battleView);
     }
 
