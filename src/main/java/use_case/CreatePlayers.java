@@ -9,6 +9,13 @@ import java.util.Scanner;
 public class CreatePlayers {
     PlayerorAiPokemons player;
     PlayerorAiPokemons aiPlayer;
+
+    /**
+     * This method creates the players for the game.
+     * @param allPokemonsObjectsNames
+     * @param allPokemonsObjects
+     * @return player, aiPlayer
+     */
     public CreatePlayers(String[] allPokemonsObjectsNames, Pokemon[] allPokemonsObjects) {
 
         for (int i = 0; i < allPokemonsObjects.length; i++) {
@@ -66,6 +73,11 @@ public class CreatePlayers {
         this.player = player;
         this.aiPlayer = aiPlayer;
     }
+
+    /**
+     * This method returns the players.
+     * @return player, aiPlayer
+     */
     public PlayerorAiPokemons[] returnPlayers() {
         return new PlayerorAiPokemons[] {player, aiPlayer};
     }
