@@ -11,4 +11,6 @@ public interface RunGameOutput {
     public void playRandomMove();
 
     public void SwitchPlayerPokemon(String move);
+
+    String getWinnerOfGame();
 }

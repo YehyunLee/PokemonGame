@@ -1,7 +1,5 @@
 package use_case;
 import view.BattleViewInterface;
-import view.LoserInterface;
-import view.WinnerInterface;
 import entity.PlayerorAiPokemons;
 import entity.GameState;
 import entity.Pokemon;
@@ -47,8 +45,8 @@ public class RunGame implements RunGameOutput {
         do {
             newIndex = random.nextInt(6);
             if (playerorAiPokemons.isAllDead()) {
-                gameState.GameOver = true;
                 System.out.println("All of PlayerAi's Pokemon are unable to battle, Player wins!");
+                gameState.PlayerWin = "True";
                 return;
             }
 
@@ -59,12 +57,13 @@ public class RunGame implements RunGameOutput {
 
         playerorAiPokemons.SwapActivePokemon(newIndex);
         battleView.printToConsole("AiPlayer Switched to Pokémon " + playerorAiPokemons.getActivePokemon().getName());
-        battleView.updateBackGif(gameState.aiPlayer.getActivePokemon().getFrontSprite());
-        updateBothHealthBars();
+        battleView.updateBackGif(playerorAiPokemons.getActivePokemon().getFrontSprite());
+        updateEnemyHealthBar();
+        updatePlayerHealthBar();
         printHealthStatus(gameState.player, gameState.aiPlayer);
     }
 
-    /**
+    /*
      * Allows a player to switch Pokémon during the game.
      *
      * @param playerPokemons The player's pokémons.
@@ -77,8 +76,8 @@ public class RunGame implements RunGameOutput {
             printAllPokemonStatuses(playerPokemons);
 
             if (playerPokemons.isAllDead()) {
-                gameState.GameOver = true;
                 System.out.println("All of Player's Pokemon are unable to battle, PlayerAi wins!");
+                gameState.PlayerWin = "False";
             } else if (newIndex >= 0 && newIndex < 6 && newIndex != playerPokemons.getCurrentPokemonIndex() && !playerPokemons.isSwapPokemonAlive(newIndex)) {
                 battleView.printToConsole("Selected Pokémon is unable to battle.");
                 newIndex = -1;
@@ -92,7 +91,8 @@ public class RunGame implements RunGameOutput {
         } while (newIndex == -1);
 
         playerPokemons.SwapActivePokemon(newIndex);
-        updateBothHealthBars();
+        updateEnemyHealthBar();
+        updatePlayerHealthBar();
         battleView.printToConsole("Switched to Pokémon " + playerPokemons.getActivePokemon().getName());
     }
 
@@ -104,8 +104,8 @@ public class RunGame implements RunGameOutput {
     public void SwitchPlayerPokemon(String move) {
         printBothStatuses();
         if (gameState.player.isAllDead()) {
-            gameState.GameOver = true;
             System.out.println("All of Player's Pokemon are unable to battle, Ai Player wins!");
+            gameState.PlayerWin = "False";
         } else if (Integer.parseInt(move) == gameState.player.getCurrentPokemonIndex()) { // If Index is the same
             battleView.printToConsole("Move Failed!");
         } else {
@@ -113,6 +113,20 @@ public class RunGame implements RunGameOutput {
             battleView.updateFrontGif(gameState.player.getActivePokemon().getBackSprite());
             battleView.printToConsole("Player Switched to Pokémon " + gameState.player.getActivePokemon().getName());
             printHealthStatus(gameState.player, gameState.aiPlayer);
+        }
+    }
+
+    /**
+     * Returns the winner of the game
+     *
+     */
+    public String getWinnerOfGame() {
+        if (gameState.PlayerWin.equals("True")) {
+            return "Player";
+        } else if (gameState.PlayerWin.equals("False")) {
+            return "AIPlayer";
+        } else {
+            return "";
         }
     }
 
@@ -157,6 +171,8 @@ public class RunGame implements RunGameOutput {
                 String selectedAttack = attackTypes[random.nextInt(attackTypes.length)];
                 battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedAttack + "!");
                 useAttack(gameState.aiPlayer, gameState.player, selectedAttack);
+                updateEnemyHealthBar();
+                updatePlayerHealthBar();
                 break;
 
             case 1: // Heal
@@ -164,6 +180,8 @@ public class RunGame implements RunGameOutput {
                 String selectedHeal = healTypes[random.nextInt(healTypes.length)];
                 battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedHeal + "!");
                 useHeal(gameState.aiPlayer, selectedHeal);
+                updateEnemyHealthBar();
+                updatePlayerHealthBar();
                 break;
 
             case 2: // Defense
@@ -171,9 +189,10 @@ public class RunGame implements RunGameOutput {
                 String selectedDefense = defenseTypes[random.nextInt(defenseTypes.length)];
                 battleView.printToConsole("AiPlayer: " + gameState.aiPlayer.getActivePokemon().getName() + " Use " + selectedDefense + "!");
                 useDefense(gameState.aiPlayer, selectedDefense);
+                updateEnemyHealthBar();
+                updatePlayerHealthBar();
                 break;
         }
-        gameState.reverseIsPlayerTurn();
     }
 
     /**
@@ -206,14 +225,6 @@ public class RunGame implements RunGameOutput {
     }
 
     /**
-     * Updates both the player's and enemy's health bars in the battle view.
-     */
-    public static void updateBothHealthBars() {
-        updateEnemyHealthBar();
-        updatePlayerHealthBar();
-    }
-
-    /**
      * Executes an attack from one Pokémon against another.
      *
      * @param player     The attacking Pokémon.
@@ -227,7 +238,8 @@ public class RunGame implements RunGameOutput {
         battleView.printToConsole(opponent.getActivePokemon().getName() + " Took " + result + " Damage");
 
         opponent.getActivePokemon().takeDammage(result);
-        updateBothHealthBars();
+        updateEnemyHealthBar();
+        updatePlayerHealthBar();
 
         if (opponent.getActivePokemon().getHealth() <= 0) {
             handleOpponentFainting(opponent);
@@ -266,7 +278,8 @@ public class RunGame implements RunGameOutput {
         double result = getMovePower("Heal", healType);
         battleView.printToConsole(player.getActivePokemon().getName() + " Used " + healType + "!");
         battleView.printToConsole("Healed " + player.getActivePokemon().getName() + " for " + (int) result);
-        updateBothHealthBars();
+        updateEnemyHealthBar();
+        updatePlayerHealthBar();
 
         player.getActivePokemon().doHealing(result);
         printHealthStatus(gameState.player, gameState.aiPlayer);

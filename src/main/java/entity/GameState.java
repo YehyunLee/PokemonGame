@@ -1,18 +1,14 @@
 package entity;
 
 public class GameState {
-    public Boolean GameOver = false;
     public PlayerorAiPokemons player;
     public PlayerorAiPokemons aiPlayer;
-
-    public Boolean isPlayerTurn = true;
-
     public Pokemon ActivePlayerPokemon;
     public Pokemon ActiveAiPokemon;
+    public String PlayerWin = "";
 
 
     public void initializeGameState(PlayerorAiPokemons player, PlayerorAiPokemons aiPlayer) {
-        this.GameOver = false;
         this.player = player;
         this.aiPlayer = aiPlayer;
 
@@ -20,8 +16,5 @@ public class GameState {
         ActiveAiPokemon = aiPlayer.getActivePokemon();
     }
 
-    public void reverseIsPlayerTurn() {
-        this.isPlayerTurn = !this.isPlayerTurn;
-    }
 
 }

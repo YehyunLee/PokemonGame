@@ -6,15 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Winner implements WinnerInterface {
-    public void displayWinnerView() {
-        // Create the main frame for the winner view
-        JFrame frame = new JFrame("Winner!");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+public class Winner {
+    public void displayWinnerView(JFrame existingFrame) {
+        // Use the existing frame instead of creating a new one
+        JFrame frame = existingFrame;
+        frame.setTitle("Winner!");
 
-        // Set the frame to full screen size
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(false);
+        // Clear the previous content of the frame
+        frame.getContentPane().removeAll();
+        frame.repaint();
 
         // Custom panel with background image
         JPanel backgroundPanel = new BackgroundPanel("UIAssets/win.png");
@@ -30,10 +30,11 @@ public class Winner implements WinnerInterface {
         gbc.anchor = GridBagConstraints.CENTER; // Center the label
         backgroundPanel.add(winnerLabel, gbc); // Add the label to the background panel
 
-        // Add the backgroundPanel to the center of the frame
-        frame.add(backgroundPanel, BorderLayout.CENTER);
+        // Update the content of the existing frame
+        frame.setContentPane(backgroundPanel);
+        frame.revalidate(); // Refresh the frame layout
 
-        // Set the frame to be visible
+        // Set the frame to be visible (if it's not already)
         frame.setVisible(true);
     }
 

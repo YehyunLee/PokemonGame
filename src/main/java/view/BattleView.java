@@ -122,7 +122,7 @@ public class BattleView implements BattleViewInterface {
      * Initializes the typing timer for console text animation.
      */
     private void initializeTimer() {
-        typingTimer = new Timer(50, new ActionListener() {
+        typingTimer = new Timer(15, new ActionListener() {
             private String currentMessage;
             private int charIndex = 0;
 
@@ -132,6 +132,7 @@ public class BattleView implements BattleViewInterface {
                     if (messageQueue.isEmpty()) {
                         typingTimer.stop();
                         isTyping = false;
+                        setButtonsEnabled(true); // Re-enable buttons when typing ends
                         return;
                     }
                     currentMessage = messageQueue.poll();
@@ -139,6 +140,7 @@ public class BattleView implements BattleViewInterface {
                         consoleTextArea.append("\n");
                     }
                     charIndex = 0;
+                    setButtonsEnabled(false); // Disable buttons when typing starts
                 }
 
                 consoleTextArea.append(String.valueOf(currentMessage.charAt(charIndex)));
@@ -146,6 +148,29 @@ public class BattleView implements BattleViewInterface {
                 charIndex++;
             }
         });
+    }
+
+    /**
+     * Prevents clicks from the Buttons as text is being printed
+     */
+    private void setButtonsEnabled(boolean enabled) {
+        attackButton.setEnabled(enabled);
+        heavyAttackButton.setEnabled(enabled);
+        lightAttackButton.setEnabled(enabled);
+        trueAttackButton.setEnabled(enabled);
+        defenseButton.setEnabled(enabled);
+        heavyDefenseButton.setEnabled(enabled);
+        lightDefenseButton.setEnabled(enabled);
+        healButton.setEnabled(enabled);
+        lightHealButton.setEnabled(enabled);
+        heavyHealButton.setEnabled(enabled);
+        swapButton.setEnabled(enabled);
+        zero.setEnabled(enabled);
+        one.setEnabled(enabled);
+        two.setEnabled(enabled);
+        three.setEnabled(enabled);
+        four.setEnabled(enabled);
+        five.setEnabled(enabled);
     }
 
     /**
@@ -416,6 +441,14 @@ public class BattleView implements BattleViewInterface {
         action.run();
         gameOutput.playRandomMove();
         updateBottomMenuPanel(attackButton, defenseButton, healButton, swapButton);
+        String winner = gameOutput.getWinnerOfGame();
+        if (winner.equals("Player")) {
+            Winner win = new Winner();
+            win.displayWinnerView(frame);
+        } else if (winner.equals("AIPlayer")) {
+            Loser lose = new Loser();
+            lose.displayLoserView(frame);
+        }
     }
 
     public void attackButtonClicked(ActionEvent e) {
@@ -424,14 +457,17 @@ public class BattleView implements BattleViewInterface {
 
     public void heavyAttackButtonClicked(ActionEvent e) {
         handleButtonClick("Heavy Attack", () -> gameOutput.useAttackOnOpponent(move));
+        flashScreen(Color.RED, 500);
     }
 
     public void lightAttackButtonClicked(ActionEvent e) {
         handleButtonClick("Light Attack", () -> gameOutput.useAttackOnOpponent(move));
+        flashScreen(Color.RED, 500);
     }
 
     public void trueAttackButtonClicked(ActionEvent e) {
         handleButtonClick("True Attack", () -> gameOutput.useAttackOnOpponent(move));
+        flashScreen(Color.RED, 500);
     }
 
     /**
@@ -477,10 +513,12 @@ public class BattleView implements BattleViewInterface {
 
     public void heavyDefenseButtonClicked(ActionEvent e) {
         handleButtonClick("Heavy Defense", () -> gameOutput.useDefense(move));
+        flashScreen(Color.ORANGE, 500);
     }
 
     public void lightDefenseButtonClicked(ActionEvent e) {
         handleButtonClick("Light Defense", () -> gameOutput.useDefense(move));
+        flashScreen(Color.ORANGE, 500);
     }
 
     public void healButtonClicked(ActionEvent e) {
@@ -489,10 +527,12 @@ public class BattleView implements BattleViewInterface {
 
     public void lightHealButtonClicked(ActionEvent e) {
         handleButtonClick("Light Heal", () -> gameOutput.useHealOnSelf(move));
+        flashScreen(Color.GREEN, 500);
     }
 
     public void heavyHealButtonClicked(ActionEvent e) {
         handleButtonClick("Heavy Heal", () -> gameOutput.useHealOnSelf(move));
+        flashScreen(Color.GREEN, 500);
     }
 
     /**
@@ -524,6 +564,38 @@ public class BattleView implements BattleViewInterface {
         playerHealthBar.setBounds(backLabelBounds.x, backLabelBounds.y - playerHealthBar.getPreferredSize().height - offset, backLabelBounds.width, playerHealthBar.getPreferredSize().height);
         enemyHealthBar.setBounds(frontLabelBounds.x, frontLabelBounds.y - enemyHealthBar.getPreferredSize().height - offset, frontLabelBounds.width, enemyHealthBar.getPreferredSize().height);
     }
+
+    /**
+     * Flash Screen function with semi-transparent overlay
+     */
+    private void flashScreen(Color color, int duration) {
+        SwingUtilities.invokeLater(() -> {
+            // Create a new frame to act as the flash overlay
+            JFrame flashFrame = new JFrame();
+            flashFrame.setUndecorated(true);
+            flashFrame.setAlwaysOnTop(true);
+            flashFrame.setBackground(new Color(0, 0, 0, 0)); // Completely transparent background
+
+            // Create a panel with the desired flash color
+            JPanel flashPanel = new JPanel();
+            flashPanel.setOpaque(true);
+            flashPanel.setBackground(new Color(color.getRed(), color.getGreen(), color.getBlue(), 128)); // Semi-transparent
+
+            // Add the panel to the frame and set the frame size to match the screen size
+            flashFrame.add(flashPanel);
+            flashFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+
+            // Display the flash frame
+            flashFrame.setVisible(true);
+
+            // Timer to remove the flash frame after the specified duration
+            new Timer(duration, e -> {
+                flashFrame.dispose(); // Close and dispose of the flash frame
+                ((Timer) e.getSource()).stop(); // Stop the timer
+            }).start();
+        });
+    }
+
 
     /**
      * Change the front Gif

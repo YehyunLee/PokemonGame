@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="PokemonGame" options="--add-exports jdk.hotspot.agent/com.sun.java.swing.ui=ALL-UNNAMED" />
+      <module name="PokemonGame" options="" />
     </option>
   </component>
 </project>
