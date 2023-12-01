@@ -8,6 +8,12 @@ import use_case.RunGameOutput;
 public class InitializeTestGameState {
     private static BattleViewInterface battleView;
     private RunGameOutput gameOutput;
+
+    /**
+     * This method initializes the game state for testing purposes.
+     * @param factory
+     * @param allPokemonNames
+    * */
     public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
         PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
         PlayerorAiPokemons playerAi = CreatePlayersTest.MakeTestPlayerAi(factory);

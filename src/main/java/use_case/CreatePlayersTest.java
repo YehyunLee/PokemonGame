@@ -7,6 +7,11 @@ import java.util.List;
 
 public class CreatePlayersTest {
 
+    /**
+     * This method creates the players for the test game.
+     * @param factory
+     * @return
+     */
     public static PlayerorAiPokemons MakeTestPlayer(PokemonFactoryFromData factory){
 
         Pokemon p0 = factory.createPokemonFromData("Pikachu");
@@ -29,6 +34,11 @@ public class CreatePlayersTest {
         return player;
     }
 
+    /**
+     * This method creates the AI players for the test game.
+     * @param factory
+     * @return
+     */
     public static PlayerorAiPokemons MakeTestPlayerAi(PokemonFactoryFromData factory){
 
 

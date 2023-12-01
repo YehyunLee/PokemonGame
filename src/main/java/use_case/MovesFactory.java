@@ -7,6 +7,11 @@ import java.util.List;
 
 public class MovesFactory {
 
+    /**
+     * This method creates the moves for the Pokemon.
+     * @param pokemonList
+     * @return
+     */
     public static List<String> createMoves(List<Pokemon> pokemonList) {
         List<String> movesList = new ArrayList<>();
 

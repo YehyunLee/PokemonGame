@@ -9,6 +9,12 @@ public class InitilizeGameState {
 
     private static BattleViewInterface battleView;
     private RunGameOutput gameOutput;
+
+    /**
+     * This method initializes the game state. This is only used for text-based game only.
+     * @param factory
+     * @param allPokemonNames
+     */
     public InitilizeGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
 
 

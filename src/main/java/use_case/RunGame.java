@@ -63,11 +63,11 @@ public class RunGame implements RunGameOutput {
         printHealthStatus(gameState.player, gameState.aiPlayer);
     }
 
-    /*
+    /**
      * Allows a player to switch Pokémon during the game.
      *
      * @param playerPokemons The player's pokémons.
-     */
+     **/
     public static void SwitchPokemon(PlayerorAiPokemons playerPokemons) {
         int newIndex = 0;
 
