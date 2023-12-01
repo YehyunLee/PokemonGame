@@ -1,8 +1,6 @@
 package view;
 
-import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonApiCallInterface;
-import data_access.PokemonListFromSpritesDataAcessObject;
 import data_access.PokemonListFromSpritesInterface;
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
@@ -18,10 +16,16 @@ import java.util.List;
 
 public class TestGameView extends JPanel {
     private JFrame frame;
-    private CreateAllPokemons allPokemons;
 
     private RunGameOutput gameOutput;
 
+    private PokemonApiCallInterface apiDataAccess;
+    private PokemonListFromSpritesInterface spritesDataAccess;
+
+    public TestGameView(PokemonApiCallInterface apiDataAccess, PokemonListFromSpritesInterface spritesDataAccess) {
+        this.apiDataAccess = apiDataAccess;
+        this.spritesDataAccess = spritesDataAccess;
+    }
     public void startGame(JFrame frame) {
         this.frame = frame;
 
@@ -39,10 +43,6 @@ public class TestGameView extends JPanel {
         // loadingLabel.setHorizontalAlignment(JLabel.CENTER);
         // frame.add(backgroundPanel, BorderLayout.CENTER);
         // frame.add(loadingLabel, BorderLayout.NORTH);
-
-        //Initialize the API and sprite data access objects
-        PokemonApiCallInterface apiDataAccess = new PokemonApiCallDataAccessObject();
-        PokemonListFromSpritesInterface spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 
         // Create an instance of PokemonFactoryFromData and inject the data access objects
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
