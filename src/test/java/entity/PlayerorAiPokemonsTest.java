@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerorAiPokemonsTest {
-//todo: add tests for PlayerorAiPokemons
+// TODO: Add tests for PlayerAiPokemons methods.
     
     @Test
     void isSwapPokemonAlive() {

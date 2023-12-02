@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameStateTest {
 
-//todo: add tests for GameState
+// TODO: Add tests for GameState methods.
 
     @Test
     void initializeGameState() {

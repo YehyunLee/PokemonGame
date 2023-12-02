@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PokemonTest {
+    // TODO: Add tests for Pokemon getMoves and printAllStats.
     private Pokemon pikachu;
 
     @BeforeEach
@@ -54,7 +55,6 @@ class PokemonTest {
 
     @Test
     void getMoves() {
-    //todo: how to test this?
     }
 
     @Test
@@ -104,7 +104,6 @@ class PokemonTest {
 
     @Test
     void printAllStats() {
-    //todo: how to test this?
 
     }
 }
