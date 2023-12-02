@@ -8,5 +8,7 @@ class MovesTest {
 
     @Test
     void getName() {
+        Moves move = new Moves("Thunderbolt");
+        assertEquals("Thunderbolt", move.getName());
     }
 }

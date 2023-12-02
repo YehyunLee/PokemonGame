@@ -9,14 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameStateTest {
 
-    private GameState gameState = new GameState();
-
-    @BeforeEach
-    void setUp() {
-        gameState.initializeGameState();
-
-
-    }
+//todo: add tests for GameState
 
     @Test
     void initializeGameState() {
