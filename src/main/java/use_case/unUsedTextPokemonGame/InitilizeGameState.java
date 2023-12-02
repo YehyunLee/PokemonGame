@@ -1,6 +1,9 @@
-package use_case;
+package use_case.unUsedTextPokemonGame;
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
+import use_case.CreateAllPokemons;
+import use_case.CreatePlayers;
+import use_case.PokemonFactoryFromData;
 import view.BattleView;
 import view.BattleViewInterface;
 import use_case.RunGameOutput;

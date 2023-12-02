@@ -9,15 +9,16 @@ import java.util.List;
 
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
-import entity.PlayerorAiPokemons;
+//import entity.PlayerorAiPokemons;
 import entity.Pokemon;
-import use_case.*;
+import use_case.InitializePokemonObjectsInterface;
+import use_case.InitializeRunGameInterface;
+//import use_case.*;
 
 public class GameView extends JPanel {
     private JFrame frame;
-    private CreateAllPokemons allPokemons;
 
-    private RunGameOutput gameOutput;
+//    private RunGameOutput gameOutput;
 
     private PokemonApiCallInterface apiDataAccess;
     private PokemonListFromSpritesInterface spritesDataAccess;
@@ -46,16 +47,7 @@ public class GameView extends JPanel {
         // frame.add(backgroundPanel, BorderLayout.CENTER);
         // frame.add(loadingLabel, BorderLayout.NORTH);
 
-
-        // Create an instance of PokemonFactoryFromData and inject the data access objects
-        PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
-        String[] allPokemonNames = factory.spriteParser.getAllPokemonNamesNoDuplicate(apiDataAccess);
-
-        // frame.getContentPane().remove(loadingLabel);
-
-        // Create the game state
-        allPokemons = new CreateAllPokemons(factory, allPokemonNames);
-        Pokemon[] allPokemonsObjects = allPokemons.CreatePokemons();
+        Pokemon[] allPokemonsObjects = InitializePokemonObjectsInterface.GetPokemonObjects(apiDataAccess, spritesDataAccess);
 
         displayPokemonSelection(allPokemonsObjects);
     }
@@ -100,37 +92,7 @@ public class GameView extends JPanel {
         JButton proceedButton = new JButton("Proceed");
         proceedButton.addActionListener(e -> {
             if (selectedPokemonList.size() == 6) {
-                // convert listPokemon to Pokemon[]
-                Pokemon[] selectedPokemonListArray = new Pokemon[6];
-                for (int i = 0; i < 6; i++) {
-                    selectedPokemonListArray[i] = selectedPokemonList.get(i);
-                }
-
-                // Randomly choose 6 from allPokemonsObjects
-                Pokemon[] aiPokemon = new Pokemon[6];
-                for (int i = 0; i < 6; i++) {
-                    Pokemon saveRandomPoke = allPokemons[(int) (Math.random() * allPokemons.length)];
-                    if (!selectedPokemonList.contains(saveRandomPoke)) {
-                        aiPokemon[i] = saveRandomPoke;
-                    } else {
-                        i--;
-                    }
-                }
-
-                PlayerorAiPokemons player = new PlayerorAiPokemons(selectedPokemonListArray, "Player", 0);
-                // Random index for first Pokemon
-                PlayerorAiPokemons aiPlayer = new PlayerorAiPokemons(aiPokemon, "AI Player", (int) (Math.random() * 6));
-
-                List<String> playerMoves = MovesFactory.createMoves(List.of(player.pokemons));
-                List<String> aiMoves = MovesFactory.createMoves(List.of(aiPlayer.pokemons));
-
-                for (int i = 0; i < playerMoves.size(); i++) {
-                    player.pokemons[i].setMoves(playerMoves.get(i));
-                    aiPlayer.pokemons[i].setMoves(aiMoves.get(i));
-                }
-
-                BattleViewInterface battleView = new BattleView(frame);
-                RunGame game = new RunGame(player, aiPlayer, battleView);
+                InitializeRunGameInterface.initializeRunGame(allPokemons, selectedPokemonList, frame);
             } else {
                 JOptionPane.showMessageDialog(frame, "Please select exactly 6 Pokemon.", "Error", JOptionPane.ERROR_MESSAGE);
             }
