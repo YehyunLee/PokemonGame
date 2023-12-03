@@ -1,5 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The {@code PlayerorAiPokemons} class represents a player or AI entity in our Pokémon game, containing information
  * about the type, an array of Pokémon, and the current active Pokémon.
@@ -93,4 +96,18 @@ public class PlayerorAiPokemons {
     public String getType() {
         return this.type;
     }
+
+    /**
+     * Gets all the alive pokemons indicies
+     */
+    public List<Integer> getAlivePokemonIndices() {
+        List<Integer> aliveIndices = new ArrayList<>();
+        for (int i = 0; i < pokemons.length; i++) {
+            if (pokemons[i].getIsAlive()) {
+                aliveIndices.add(i);
+            }
+        }
+        return aliveIndices;
+    }
+
 }

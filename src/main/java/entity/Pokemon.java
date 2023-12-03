@@ -243,12 +243,22 @@ public class Pokemon {
     public void takeDammage (Double dammage) {
         health -= (int) Math.floor(dammage);
     }
+
     /**
      * Increases the health of the Pokemon by the specified healing amount.
      *
      * @param healingAmmount The amount of healing to be applied to the Pokemon.
      */
     public void doHealing (double healingAmmount) {
+        health += (int) Math.floor(healingAmmount);
+    }
+
+    /**
+     * Increases the health of the Pokemon by the specified healing amount.
+     *
+     * @param healingAmmount The amount of healing to be applied to the Pokemon.
+     */
+    public void doTotalHealing (double healingAmmount) {
         health += (int) Math.floor(healingAmmount);
     }
 

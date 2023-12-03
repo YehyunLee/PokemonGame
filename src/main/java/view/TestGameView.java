@@ -47,8 +47,8 @@ public class TestGameView extends JPanel {
         // Create an instance of PokemonFactoryFromData and inject the data access objects
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
 
-        PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
-        PlayerorAiPokemons aiPlayer = CreatePlayersTest.MakeTestPlayerAi(factory);
+        PlayerorAiPokemons player = CreatePlayersTest.makeTestPlayer(factory);
+        PlayerorAiPokemons aiPlayer = CreatePlayersTest.makeTestPlayerAi(factory);
 
         BattleView battleView = new BattleView(frame);
         RunGame game = new RunGame(player, aiPlayer, battleView);

@@ -174,4 +174,6 @@ public interface BattleViewInterface {
      * @param gameOutput The game output object to be set.
      */
     void setGameOutput(RunGameOutput gameOutput);
+
+    public void setIsFainted(String isFainted);
 }

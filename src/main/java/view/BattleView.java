@@ -12,6 +12,11 @@ import javax.swing.Timer;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.JProgressBar;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * View for handling the Battle Effects.
@@ -29,7 +34,6 @@ public class BattleView implements BattleViewInterface {
     private Queue<String> messageQueue = new LinkedList<>();
     private Timer typingTimer;
     private boolean isTyping = false;
-
     private JButton attackButton;
     private JButton heavyAttackButton;
     private JButton lightAttackButton;
@@ -56,6 +60,8 @@ public class BattleView implements BattleViewInterface {
     public GridBagConstraints gbc = new GridBagConstraints();
 
     public String move = "";
+
+    public String isFainted = "";
     private RunGameOutput gameOutput;
 
     /**
@@ -71,6 +77,7 @@ public class BattleView implements BattleViewInterface {
         initilizeMenuView();
         initializeFrameLayout();
         initializeConsoleTextArea();
+        playBackgroundMusic("UIAssets/battleMusic.wav");
     }
 
     /**
@@ -107,6 +114,27 @@ public class BattleView implements BattleViewInterface {
         }
     }
 
+    /**
+     * Method to play background Music
+     */
+    public void playBackgroundMusic(String soundFileName) {
+        try {
+            // Open an audio input stream.
+            File soundFile = new File(soundFileName);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the clip continuously
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Initializes the main frame of the Battle View.
@@ -122,7 +150,7 @@ public class BattleView implements BattleViewInterface {
      * Initializes the typing timer for console text animation.
      */
     private void initializeTimer() {
-        typingTimer = new Timer(15, new ActionListener() {
+        typingTimer = new Timer(30, new ActionListener() {
             private String currentMessage;
             private int charIndex = 0;
 
@@ -434,13 +462,9 @@ public class BattleView implements BattleViewInterface {
     }
 
     /**
-     * Helper method for common operations in button click events
+     * Helper method to check game winner
      */
-    private void handleButtonClick(String moveName, Runnable action) {
-        setMove(moveName);
-        action.run();
-        gameOutput.playRandomMove();
-        updateBottomMenuPanel(attackButton, defenseButton, healButton, swapButton);
+    private void checkGameWinner() {
         String winner = gameOutput.getWinnerOfGame();
         if (winner.equals("Player")) {
             Winner win = new Winner();
@@ -450,6 +474,28 @@ public class BattleView implements BattleViewInterface {
             lose.displayLoserView(frame);
         }
     }
+
+    /**
+     * Helper method for common operations in button click events
+     */
+    private void handleButtonClick(String moveName, Runnable action) {
+        setMove(moveName);
+        action.run();
+        gameOutput.playRandomMove();
+
+        if (isFainted.equals("True")) {
+            System.out.println("Fainted");
+            updateBottomMenuPanel(zero, one, two, three, four, five);
+        } else {
+            System.out.println("Not Fainted");
+            updateBottomMenuPanel(attackButton, defenseButton, healButton, swapButton);
+            setIsFainted("False");
+        }
+
+        setIsFainted("False");
+        checkGameWinner();
+    }
+
 
     public void attackButtonClicked(ActionEvent e) {
         updateBottomMenuPanel(heavyAttackButton, lightAttackButton, trueAttackButton, blankButton);
@@ -476,6 +522,7 @@ public class BattleView implements BattleViewInterface {
     public void swapButtonClicked(ActionEvent e) {
         updateBottomMenuPanel(zero, one, two, three, four, five);
     }
+
 
     public void zeroButtonClicked(ActionEvent e) {
         JOptionPane.showMessageDialog(frame, "Swap to Pokemon at Index 0");
@@ -512,12 +559,12 @@ public class BattleView implements BattleViewInterface {
     }
 
     public void heavyDefenseButtonClicked(ActionEvent e) {
-        handleButtonClick("Heavy Defense", () -> gameOutput.useDefense(move));
+        handleButtonClick("Heavy Defense", () -> gameOutput.useDefenseOnSelf(move));
         flashScreen(Color.ORANGE, 500);
     }
 
     public void lightDefenseButtonClicked(ActionEvent e) {
-        handleButtonClick("Light Defense", () -> gameOutput.useDefense(move));
+        handleButtonClick("Light Defense", () -> gameOutput.useDefenseOnSelf(move));
         flashScreen(Color.ORANGE, 500);
     }
 
@@ -596,7 +643,6 @@ public class BattleView implements BattleViewInterface {
         });
     }
 
-
     /**
      * Change the front Gif
      */
@@ -630,5 +676,10 @@ public class BattleView implements BattleViewInterface {
         this.move = move;
     }
 
-
+    /**
+     * Change the isFainted status
+     */
+    public void setIsFainted(String isFainted) {
+        this.isFainted = isFainted;
+    }
 }
