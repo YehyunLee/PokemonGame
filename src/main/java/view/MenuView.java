@@ -39,8 +39,8 @@ public class MenuView {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add your code here to start the actual game
-//                JOptionPane.showMessageDialog(frame, "Starting the Game!");
+                JOptionPane.showMessageDialog(frame, "Loading game please wait a few " +
+                        "seconds after pressing OK ...");
                 GameView gameView = new GameView(apiDataAccess, spritesDataAccess);
                 gameView.startGame(frame);
             }
@@ -52,8 +52,8 @@ public class MenuView {
         startTestGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add your code here to start the test game
-                JOptionPane.showMessageDialog(frame, "Starting the Test Game!");
+                JOptionPane.showMessageDialog(frame, "Warning API Call is Limited to 50 calls per 10 minutes, dont spam this! \n  " +
+                        "Loading game please wait a few seconds after pressing OK");
                 TestGameView testGameView = new TestGameView(apiDataAccess, spritesDataAccess);
                 testGameView.startGame(frame);
             }

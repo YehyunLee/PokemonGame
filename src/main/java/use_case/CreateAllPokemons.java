@@ -2,6 +2,10 @@ package use_case;
 
 import entity.Pokemon;
 
+/**
+ * The CreateAllPokemon class is responsible for creating all the Pokemons using the PokemonFactoryFromData, and gets
+ * the api daty and saves it inside a list of Pokemons.
+ */
 public class CreateAllPokemons {
     private PokemonFactoryFromData factory;
     private String[] allPokemonNames;

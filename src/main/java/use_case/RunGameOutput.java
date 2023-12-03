@@ -18,7 +18,7 @@ public interface RunGameOutput {
      * Used for light, heavy defense.
      * @param move
      */
-    public void useDefense(String move);
+    public void useDefenseOnSelf(String move);
 
     /**
      * Used for playing random move.
@@ -35,4 +35,5 @@ public interface RunGameOutput {
      * Get the winner of the game.
      */
     String getWinnerOfGame();
+
 }

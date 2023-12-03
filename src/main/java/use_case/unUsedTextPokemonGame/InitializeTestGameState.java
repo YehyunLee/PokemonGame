@@ -17,8 +17,8 @@ public class InitializeTestGameState {
      * @param allPokemonNames
     * */
     public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
-        PlayerorAiPokemons player = CreatePlayersTest.MakeTestPlayer(factory);
-        PlayerorAiPokemons playerAi = CreatePlayersTest.MakeTestPlayerAi(factory);
+        PlayerorAiPokemons player = CreatePlayersTest.makeTestPlayer(factory);
+        PlayerorAiPokemons playerAi = CreatePlayersTest.makeTestPlayerAi(factory);
 //        BattleViewInterface battleView = new BattleView();
 //        RunGame game = new RunGame(player, playerAi, battleView);
 
