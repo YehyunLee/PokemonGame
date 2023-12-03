@@ -250,7 +250,7 @@ public class RunGame implements RunGameOutput {
         gameState.player.getActivePokemon().setHealth(0);
 
         // Let player swap Pokemon
-        battleView.setIsFainted("True");
+        battleView.setIsFaintedObserver("True");
         updatePlayerHealthBar();
         updateEnemyHealthBar();
     }
