@@ -2,16 +2,13 @@ package use_case;
 
 import entity.Pokemon;
 
-/**
- * The CreateAllPokemon class is responsible for creating all the Pokemons using the PokemonFactoryFromData, and gets
- * the api daty and saves it inside a list of Pokemons.
- */
-public class CreateAllPokemons {
+public class CreateAllPokemons implements CreateAllPokemonsInterface {
     private PokemonFactoryFromData factory;
     private String[] allPokemonNames;
 
     /**
      * This method saves all the Pokemon objects from the data and saves an array of Pokemon objects as a local variable.
+     *
      * @param factory
      * @param allPokemonNames
      */
@@ -20,17 +17,17 @@ public class CreateAllPokemons {
         this.allPokemonNames = allPokemonNames;
     }
 
-
     /**
      * This method creates all the Pokemon objects from the data and saves an array of Pokemon objects.
+     *
      * @return allPokemon
      */
+    @Override
     public Pokemon[] CreatePokemons() {
         // For each Pokemon name, create a Pokemon object, save Pokemon and print its stats
         Pokemon[] allPokemon = new Pokemon[allPokemonNames.length];
         for (int i = 0; i < allPokemonNames.length; i++) {
             allPokemon[i] = factory.createPokemonFromData(allPokemonNames[i]);
-            //allPokemon[i].printAllStats();
         }
         return allPokemon;
     }
