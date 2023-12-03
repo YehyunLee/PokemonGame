@@ -42,12 +42,25 @@ public class PokemonListFromSpritesDataAcessObject implements PokemonListFromSpr
         return pokemonSprites.toArray(new String[0]);
     }
 
+    /**
+     * Constructs the full folder path for Pokemon sprites based on the specified subfolder.
+     *
+     * @param subfolder The subfolder where Pokemon sprites are located.
+     * @return The full folder path for Pokemon sprites.
+     */
     private String constructSpritesFolderPath(String subfolder) {
         return "src" + File.separator + "main" + File.separator + "java"
                 + File.separator + "data_access" + File.separator + "sprites" + File.separator + "pokemon" +
                 File.separator + "showdown" + File.separator + subfolder;
     }
 
+    /**
+     * Retrieves a list of sprite paths ending with ".gif" from the specified folder.
+     *
+     * @param folderPath The folder path to search for sprite paths.
+     * @return A list of sprite paths.
+     * @throws IOException If an IO error occurs while reading the folder.
+     */
     private List<Path> getSpritePaths(String folderPath) throws IOException {
         return Files.walk(Path.of(folderPath), 1, FileVisitOption.FOLLOW_LINKS)
                 .filter(path -> path.toString().endsWith(".gif"))

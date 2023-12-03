@@ -484,10 +484,8 @@ public class BattleView implements BattleViewInterface {
         gameOutput.playRandomMove();
 
         if (isFainted.equals("True")) {
-            System.out.println("Fainted");
             updateBottomMenuPanel(zero, one, two, three, four, five);
         } else {
-            System.out.println("Not Fainted");
             updateBottomMenuPanel(attackButton, defenseButton, healButton, swapButton);
             setIsFainted("False");
         }

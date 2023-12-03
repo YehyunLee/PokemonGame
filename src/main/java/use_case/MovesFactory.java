@@ -9,8 +9,9 @@ public class MovesFactory {
 
     /**
      * This method creates the moves for the Pokemon.
-     * @param pokemonList
-     * @return
+     *
+     * @param pokemonList List of Pokemon for which moves are created.
+     * @return List of move details.
      */
     public static List<String> createMoves(List<Pokemon> pokemonList) {
         List<String> movesList = new ArrayList<>();
@@ -74,6 +75,4 @@ public class MovesFactory {
         float defenseAmount = defenseStat * 0.8f;
         return new Defense(pokemonName + "'s Defense Move", 0, defenseAmount);
     }
-
-
 }

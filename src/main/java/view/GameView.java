@@ -1,4 +1,5 @@
 package view;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,17 +10,15 @@ import java.util.List;
 
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
-//import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 import use_case.InitializePokemonObjectsInterface;
 import use_case.InitializeRunGameInterface;
-//import use_case.*;
 
+/**
+ * Interface for the view where you select Pokemons
+ */
 public class GameView extends JPanel {
     private JFrame frame;
-
-//    private RunGameOutput gameOutput;
-
     private PokemonApiCallInterface apiDataAccess;
     private PokemonListFromSpritesInterface spritesDataAccess;
 
@@ -40,12 +39,6 @@ public class GameView extends JPanel {
         // Custom panel with background image
         JPanel backgroundPanel = new MenuView.BackgroundPanel();
         backgroundPanel.setLayout(new GridBagLayout());
-
-        // JLabel loadingLabel = new JLabel("Loading 1000 Pokemon data... Please wait.");
-        // loadingLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        // loadingLabel.setHorizontalAlignment(JLabel.CENTER);
-        // frame.add(backgroundPanel, BorderLayout.CENTER);
-        // frame.add(loadingLabel, BorderLayout.NORTH);
 
         Pokemon[] allPokemonsObjects = InitializePokemonObjectsInterface.GetPokemonObjects(apiDataAccess, spritesDataAccess);
 
@@ -175,12 +168,14 @@ public class GameView extends JPanel {
 
         return selectedPokemonPanel;
     }
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 20));
         label.setHorizontalAlignment(JLabel.CENTER);
         return label;
     }
+
     static class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
@@ -201,9 +196,3 @@ public class GameView extends JPanel {
         }
     }
 }
-
-
-
-
-
-

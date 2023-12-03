@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * Interface for what you see when you lose and Ai Wins
+ */
 public class Loser {
     public void displayLoserView(JFrame existingFrame) {
         // Use the existing frame instead of creating a new one

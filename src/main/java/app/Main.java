@@ -5,17 +5,25 @@ import data_access.PokemonApiCallDataAccessObject;
 import data_access.PokemonListFromSpritesDataAcessObject;
 
 /**
- * The Main class serves as the entry point for the application.
- * It initializes the data access objects and displays the main menu view.
+ * The main class, this runs the application.
  */
 public class Main {
+    /**
+     * The main entry point of the application.
+     *
+     * @param args Command-line arguments (not used in this application).
+     */
     public static void main(String[] args) {
-        // Initialize data access objects
+        // Create an instance of PokemonApiCallDataAccessObject to access Pokemon data from an API.
         PokemonApiCallDataAccessObject apiDataAccess = new PokemonApiCallDataAccessObject();
+
+        // Create an instance of PokemonListFromSpritesDataAcessObject to access Pokemon sprites data.
         PokemonListFromSpritesDataAcessObject spritesDataAccess = new PokemonListFromSpritesDataAcessObject();
 
-        // Create the main menu view and display it
+        // Create a MenuView, passing the data access objects as parameters.
         MenuView menuView = new MenuView(apiDataAccess, spritesDataAccess);
-        MenuView.displayMainView();
+
+        // Display the main view of the menu.
+        menuView.displayMainView();
     }
 }

@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The main menu where you select the game type
+ */
 public class MenuView {
     private static PokemonApiCallInterface apiDataAccess;
     private static PokemonListFromSpritesInterface spritesDataAccess;

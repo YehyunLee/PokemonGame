@@ -14,11 +14,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Creates TestGameView
+ */
 public class TestGameView extends JPanel {
     private JFrame frame;
-
-    private RunGameOutput gameOutput;
-
     private PokemonApiCallInterface apiDataAccess;
     private PokemonListFromSpritesInterface spritesDataAccess;
 
@@ -26,6 +26,7 @@ public class TestGameView extends JPanel {
         this.apiDataAccess = apiDataAccess;
         this.spritesDataAccess = spritesDataAccess;
     }
+
     public void startGame(JFrame frame) {
         this.frame = frame;
 
@@ -37,12 +38,6 @@ public class TestGameView extends JPanel {
         // Custom panel with background image
         JPanel backgroundPanel = new MenuView.BackgroundPanel();
         backgroundPanel.setLayout(new GridBagLayout());
-
-        // JLabel loadingLabel = new JLabel("Loading 1000 Pokemon data... Please wait.");
-        // loadingLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        // loadingLabel.setHorizontalAlignment(JLabel.CENTER);
-        // frame.add(backgroundPanel, BorderLayout.CENTER);
-        // frame.add(loadingLabel, BorderLayout.NORTH);
 
         // Create an instance of PokemonFactoryFromData and inject the data access objects
         PokemonFactoryFromData factory = new PokemonFactoryFromData(apiDataAccess, spritesDataAccess);
@@ -125,12 +120,14 @@ public class TestGameView extends JPanel {
 
         return selectedPokemonPanel;
     }
+
     private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 20));
         label.setHorizontalAlignment(JLabel.CENTER);
         return label;
     }
+
     static class BackgroundPanel extends JPanel {
         private Image backgroundImage;
 
@@ -151,9 +148,3 @@ public class TestGameView extends JPanel {
         }
     }
 }
-
-
-
-
-
-

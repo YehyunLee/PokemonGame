@@ -6,30 +6,30 @@ public interface RunGameOutput {
      * Used for light, true, heavy attack.
      * @param move
      */
-    public void useAttackOnOpponent(String move);
+    void useAttackOnOpponent(String move);
 
     /**
      * Used for light, heavy heal.
      * @param move
      * */
-    public void useHealOnSelf(String move);
+    void useHealOnSelf(String move);
 
     /**
      * Used for light, heavy defense.
      * @param move
      */
-    public void useDefenseOnSelf(String move);
+    void useDefenseOnSelf(String move);
 
     /**
      * Used for playing random move.
      */
-    public void playRandomMove();
+    void playRandomMove();
 
     /**
      * Used for switching player pokemon.
      * @param move
      */
-    public void SwitchPlayerPokemon(String move);
+    void SwitchPlayerPokemon(String move);
 
     /**
      * Get the winner of the game.
