@@ -175,5 +175,8 @@ public interface BattleViewInterface {
      */
     void setGameOutput(RunGameOutput gameOutput);
 
-    public void setIsFainted(String isFainted);
+    /**
+     * Observer to tell view when Pokemon Dies
+     */
+    void setIsFaintedObserver(String isFainted);
 }

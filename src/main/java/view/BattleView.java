@@ -487,10 +487,10 @@ public class BattleView implements BattleViewInterface {
             updateBottomMenuPanel(zero, one, two, three, four, five);
         } else {
             updateBottomMenuPanel(attackButton, defenseButton, healButton, swapButton);
-            setIsFainted("False");
+            setIsFaintedObserver("False");
         }
 
-        setIsFainted("False");
+        setIsFaintedObserver("False");
         checkGameWinner();
     }
 
@@ -677,7 +677,7 @@ public class BattleView implements BattleViewInterface {
     /**
      * Change the isFainted status
      */
-    public void setIsFainted(String isFainted) {
+    public void setIsFaintedObserver(String isFainted) {
         this.isFainted = isFainted;
     }
 }
