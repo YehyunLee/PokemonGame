@@ -2,8 +2,6 @@ package use_case;
 
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
-
-import javax.sound.midi.SysexMessage;
 import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;

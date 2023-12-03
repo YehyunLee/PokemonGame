@@ -1,4 +1,5 @@
 package use_case.unUsedTextPokemonGame;
+
 import entity.PlayerorAiPokemons;
 import entity.Pokemon;
 import use_case.CreatePlayersTest;
@@ -13,15 +14,14 @@ public class InitializeTestGameState {
 
     /**
      * This method initializes the game state for testing purposes.
-     * @param factory
-     * @param allPokemonNames
-    * */
+     *
+     * @param factory         The PokemonFactoryFromData instance.
+     * @param allPokemonNames An array of all Pokemon names.
+     */
     public InitializeTestGameState(PokemonFactoryFromData factory, String[] allPokemonNames) {
         PlayerorAiPokemons player = CreatePlayersTest.makeTestPlayer(factory);
         PlayerorAiPokemons playerAi = CreatePlayersTest.makeTestPlayerAi(factory);
-//        BattleViewInterface battleView = new BattleView();
-//        RunGame game = new RunGame(player, playerAi, battleView);
-
+        // BattleViewInterface battleView = new BattleView();
+        // RunGame game = new RunGame(player, playerAi, battleView);
     }
-
 }

@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * The view you see when you win the game
+ */
 public class Winner {
     public void displayWinnerView(JFrame existingFrame) {
         // Use the existing frame instead of creating a new one
