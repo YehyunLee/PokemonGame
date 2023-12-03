@@ -49,10 +49,22 @@ class PokemonTest {
     }
 
     @Test
-    void getSpeed() {
-        assertEquals(0, pikachu.getSpeed());
+    void testGetMoves() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setMoves("Attack[Light Attack: 10.0, Heavy Attack: 20.0];Defense[Light Defense: 5.0]");
+        assertEquals(2, pokemon.getMoves().size());
+        assertTrue(pokemon.getMoves().containsKey("Attack"));
+        assertTrue(pokemon.getMoves().containsKey("Defense"));
+        assertEquals(2, pokemon.getMoves().get("Attack").size());
+        assertEquals(1, pokemon.getMoves().get("Defense").size());
     }
-
+    @Test
+    void testDoTotalHealing() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setHealth(50);
+        pokemon.doTotalHealing(25.3);
+        assertEquals(75, pokemon.getHealth());
+    }
     @Test
     void getMoves() {
     }

@@ -71,15 +71,6 @@ public class Pokemon {
     }
 
     /**
-     * Returns the speed stat of the Pokemon.
-     *
-     * @return The speed stat of the Pokemon.
-     */
-    public Integer getSpeed() {
-        return speed;
-    }
-
-    /**
      * Returns a map of moves available to the Pokemon, categorized by move type.
      *
      * @return A map containing move types and their respective moves with power values.
