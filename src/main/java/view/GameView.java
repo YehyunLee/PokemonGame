@@ -85,7 +85,7 @@ public class GameView extends JPanel {
         JButton proceedButton = new JButton("Proceed");
         proceedButton.addActionListener(e -> {
             if (selectedPokemonList.size() == 6) {
-                InitializeRunGameInterface.initializeRunGame(allPokemons, selectedPokemonList, frame);
+                InitializeRunGameInterface.InitializeRunGame(allPokemons, selectedPokemonList, frame);
             } else {
                 JOptionPane.showMessageDialog(frame, "Please select exactly 6 Pokemon.", "Error", JOptionPane.ERROR_MESSAGE);
             }

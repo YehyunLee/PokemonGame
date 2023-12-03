@@ -13,7 +13,7 @@ public interface InitializeRunGameInterface {
      * This method initializes the game state. This creates player and AI objects and uses MovesFactory to create moves.
      * Then it runs the game.
      */
-    static void initializeRunGame(Pokemon[] allPokemons, List<Pokemon> selectedPokemonList, JFrame frame) {
+    static void InitializeRunGame(Pokemon[] allPokemons, List<Pokemon> selectedPokemonList, JFrame frame) {
         // Convert listPokemon to Pokemon[]
         Pokemon[] selectedPokemonListArray = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
