@@ -31,9 +31,10 @@ public interface InitializeRunGameInterface {
             }
         }
 
-        PlayerorAiPokemons player = new PlayerorAiPokemons(selectedPokemonListArray, "Player", 0);
+        CreatePlayer createPlayer = new CreatePlayer();
+        PlayerorAiPokemons player = createPlayer.CreatePlayerObject(selectedPokemonListArray, "Player", 0);
         // Random index for the first Pokemon
-        PlayerorAiPokemons aiPlayer = new PlayerorAiPokemons(aiPokemon, "AI Player", (int) (Math.random() * 6));
+        PlayerorAiPokemons aiPlayer = createPlayer.CreatePlayerObject(aiPokemon, "AI Player", (int) (Math.random() * 6));
 
         List<String> playerMoves = MovesFactory.createMoves(List.of(player.pokemons));
         List<String> aiMoves = MovesFactory.createMoves(List.of(aiPlayer.pokemons));
