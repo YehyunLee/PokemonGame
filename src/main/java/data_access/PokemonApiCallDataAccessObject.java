@@ -106,7 +106,7 @@ public class PokemonApiCallDataAccessObject implements PokemonApiCallInterface {
      * @throws IOException If an error occurs while loading data from the file.
      */
     public static JSONArray savedMakeHttpRequest(String getPokemonNumber) throws IOException {
-        Map<String, String> loadedPokemonData = loadPokemonDataFromFile("pokemon_data.pickle");
+        Map<String, String> loadedPokemonData = loadPokemonDataFromFile("src/main/java/data_access/pokemon_data.pickle");
 
         for (Map.Entry<String, String> entry : loadedPokemonData.entrySet()) {
             String pokemonNumber = entry.getKey();
