@@ -34,7 +34,7 @@ To set up and run this Java project on your local machine, follow these steps:
     ```
     If Java is not installed, download and install it from [Oracle's Java website](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html).
 
-3. **Build the Project**
+3. **Run the Project**
  Run the **main.java** inside **src/main**
 
 6. **Enjoy the Game**
