@@ -63,7 +63,7 @@ Note: These steps assume you have Git and Java correctly installed and configure
 - For other unit testing files, Alex was responsible for creating them. However, we had trouble with communicating with
     him. We tried to contact him multiple times, but he didn't respond. Due to lack of time, we did our best job to
     create unit testing files.
-- Since this is interactive video game, we decided not to user presenter, controllers. BattleView act as view model 
+- Since this is interactive video game, we decided not to use presenter, controllers. BattleView act as view model 
     where it gets input and output and update UI directly. For presenter, controller, we decided to not use it since
     it's not necessary for this project. When user push attack, it calls corresponding use case and update UI directly.4
     Our gateways are directly coded with interface under subfolders. Again, this was justified in presentation slides.
