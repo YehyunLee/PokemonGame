@@ -63,3 +63,46 @@ Note: These steps assume you have Git and Java correctly installed and configure
 - For other unit testing files, Alex was responsible for creating them. However, we had trouble with communicating with
     him. We tried to contact him multiple times, but he didn't respond. Due to lack of time, we did our best job to
     create unit testing files.
+
+9. **Outdated Progress Update**
+- Please refer to git commit history for the latest progress update.
+______________________________________________________________________________________________________
+[Updates]
+October 30, 2023 [Yehyun]
+Last week, we changed our project domain from AITextEditor to PokemonGame. You can still find our old project blueprint and API explorer activity in our AITextEditor branch. We received feedback from TA and devised a plan for entity, UML diagram, and sequence diagram.
+[Yehyun] Worked on setting entity and use case folder, setting basics entities file, and mainly implemented Pokemon entity.
+[Muaj] Working on PlayerPokemons entity
+[Alex] Worked on Move entity. Leave it as a class for now, may be implemented as an interface/factory.
+
+
+Oct, 2023
+Tyseer changed the project to the Maven project
+Nov 7, 2023 [Yehyun]
+Download sprites and organize it, removing unnecessary sprites
+Nov 8, 2023 [Yehyun]
+Worked on getCombinedListOfPokemonSprites -> RENAMED to PokemonListFromSpritesDataAcessObject
+Tyseer made interface to my code and added documents (comments on each methods) and removed unnecessary code.
+Nov 9, 23 [Yehyun]
+Our old code was very inefficent when it comes to creating dozens of Pokemons. It will fetch the sprites directory for every Pokemon.
+I made some improvement and made this more efficient.
+4 BIG UPDATES:
+1. Improved speed (efficiency)
+2. Creating all pokemon names (Converting ID to names)
+3. Creating all Pokemon classes
+4. User chooses 6 from all Pokemon lists (images to be added later)
+   Noc 10~21 [Yehyun]
+   There were many changes that’s not mentioned during this interval:
+   I worked on GameState now called InitilizeGameState and CreatePlayers and general implementation of running game. We now implemented RunGame where it player go back and forth and takes moves.
+   API has 50 call per 10 min limit. Thus, we are calling 1000 calls for 3~4H and save it to pickle. Worked on code for loading pickles as well. This also fixed the bug that involved not able to creating all pokemon object due to using name not IDs
+
+[Logic of Program: Basic Structure of Program]
+Hey everyone, Yehyun here. I am writing down these logics so that everyone can catch up with important files. Please feel free to update this section.
+
+1. PokemonFactoryFromData
+   This creates a Pokemon
+- calls PokemonApiCallParser to set Pokemon attributes
+- calls PokemonListFromSpritesDataParser to set sprites
+______________________________________________________________________________________________________
+
+
+Special Thanks to Tyseer and Muaj for their hard work on this project! — from Yehyun
