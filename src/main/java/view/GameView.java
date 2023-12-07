@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import data_access.PokemonApiCallInterface;
-import data_access.PokemonListFromSpritesInterface;
-import entity.Pokemon;
-import use_case.InitializePokemonObjectsInterface;
-import use_case.InitializeRunGameInterface;
+import data_access.PokemonApiCallInterface;  // This is gateway. We are not importing the whole data access
+import data_access.PokemonListFromSpritesInterface;  // This is gateway. We are not importing the whole data access
+import entity.Pokemon;  // This is only one that causes CA violation. Please refer to the README file for justification.
+import use_case.InitializePokemonObjectsInterface;  // This is gateway. We are not importing the whole use case
+import use_case.InitializeRunGameInterface;  // This is gateway. We are not importing the whole use case
 
 /**
  * Interface for the view where you select Pokemons

@@ -1,5 +1,8 @@
 package view;
 
+
+// Test game view only for testing purposes, for TA to use. This is not our major view component. Thus, we didn't care
+// about the CA violation in this file. Please refer to the README file for justification.
 import data_access.PokemonApiCallInterface;
 import data_access.PokemonListFromSpritesInterface;
 import entity.PlayerorAiPokemons;
