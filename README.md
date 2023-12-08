@@ -50,6 +50,8 @@ Note: These steps assume you have Git and Java correctly installed and configure
 - Start game will use pre-loaded data saved as pickle file. We ran for 3 hours to save 100~1000 pokemon data.
 - If you search "// [DEVELOPMENT] Limit number of Pokemons" you can modify to set the limit of creating pokemons.
 - This is set to 100. Max is 1000.
+- If you are using Mac, start game may not work, in this case, use test game. Our one of group member had problem
+  running start game on Mac. We are not sure why, but test game works fine on Mac. Start game work perfectly on Windows.
 
 8. **Justification for the Clean Architecture Design / Unit Testing Files**
 -  GameView has only 1 violation of importing entity.Pokemon. This is because we are sticking UI componenet with
